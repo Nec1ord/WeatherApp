@@ -23,6 +23,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        dev {
+            applicationIdSuffix '.dev'
+            buildConfigField 'boolean', 'ENABLE_LOGGING', 'true'
+            resValue 'string', 'app_name', 'WeatherApp Develop'
+        }
+        prod {
+            buildConfigField 'boolean', 'ENABLE_LOGGING', 'false'
+            resValue 'string', 'app_name', 'WeatherApp'
+        }
+    }
     dataBinding {
         enabled = true
     }
