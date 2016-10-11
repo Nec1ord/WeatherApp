@@ -1,2 +1,3 @@
 <resources>
+    <string name="R.string.message_loading">Пожалуйста, подождите…</string>
 </resources>

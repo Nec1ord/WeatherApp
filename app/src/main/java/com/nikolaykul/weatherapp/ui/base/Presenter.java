@@ -1,6 +1,6 @@
 package com.nikolaykul.weatherapp.ui.base;
 
-abstract class Presenter<T extends MvpView> {
+public abstract class Presenter<T extends MvpView> {
     private T mMvpView;
 
     void attachMvpView(T mvpView) {
@@ -11,8 +11,8 @@ abstract class Presenter<T extends MvpView> {
         return mMvpView;
     }
 
-    abstract void onResume();
+    protected abstract void onResume();
 
-    abstract void onDestroy();
+    protected abstract void onDestroy();
 
 }
