@@ -45,10 +45,24 @@ android {
 
 dependencies {
     final DAGGER_VERSION = '2.7'
-
+    final RX_VERSION = '1.1.0'
+    final RETROFIT_2_VERSION = '2.1.0'
     def daggerCompiler = "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
 
+    // Other
     compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.jakewharton.timber:timber:4.3.1'
+
+    // Rx
+    compile "io.reactivex:rxandroid:$RX_VERSION"
+    compile "io.reactivex:rxjava:$RX_VERSION"
+
+    // Retrofit 2
+    compile "com.squareup.retrofit2:retrofit:$RETROFIT_2_VERSION"
+    compile "com.squareup.retrofit2:converter-gson:$RETROFIT_2_VERSION"
+    compile "com.squareup.retrofit2:adapter-rxjava:$RETROFIT_2_VERSION"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.1.1'
 
     // Dagger 2
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
