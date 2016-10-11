@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.nikolaykul.weatherapp.WeatherApp;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
+import com.nikolaykul.weatherapp.di.activity.ActivityModule;
 import com.nikolaykul.weatherapp.di.activity.DaggerActivityComponent;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -20,6 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ActivityComponent createActivityComponent() {
         return DaggerActivityComponent.builder()
                 .applicationComponent(WeatherApp.getAppComponent(this))
+                .activityModule(new ActivityModule(this))
                 .build();
     }
 
