@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.nikolaykul.weatherapp.di.application.ApplicationComponent;
+import com.nikolaykul.weatherapp.di.application.ApplicationModule;
 import com.nikolaykul.weatherapp.di.application.DaggerApplicationComponent;
 
 import timber.log.Timber;
@@ -29,6 +30,7 @@ public class WeatherApp extends Application {
 
     private void initDi() {
         mComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
                 .build();
     }
 
