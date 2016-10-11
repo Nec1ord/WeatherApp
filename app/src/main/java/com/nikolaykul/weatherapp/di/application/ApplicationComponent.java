@@ -1,6 +1,6 @@
-package com.nikolaykul.weatherapp.di;
+package com.nikolaykul.weatherapp.di.application;
 
-import com.nikolaykul.weatherapp.MainActivity;
+import com.nikolaykul.weatherapp.StubApi;
 
 import javax.inject.Singleton;
 
@@ -9,7 +9,5 @@ import dagger.Component;
 @Singleton
 @Component(modules = NetworkModule.class)
 public interface ApplicationComponent {
-
-    void inject(MainActivity activity);
-
+    StubApi provideApi();
 }

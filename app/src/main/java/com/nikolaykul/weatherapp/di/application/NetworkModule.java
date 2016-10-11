@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.di;
+package com.nikolaykul.weatherapp.di.application;
 
 import android.util.Log;
 
@@ -15,9 +15,7 @@ class NetworkModule {
     @Provides
     @Singleton
     StubApi provideApi() {
-        return () -> {
-            Log.i(getClass().getName(), "STUB API CALL!");
-        };
+        return () -> Log.i(getClass().getName(), "STUB API CALL!");
     }
 
 }
