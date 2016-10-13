@@ -2,7 +2,7 @@ package com.nikolaykul.weatherapp.di.application;
 
 import android.content.Context;
 
-import com.nikolaykul.weatherapp.data.WeatherApi;
+import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 
 import javax.inject.Singleton;
 
