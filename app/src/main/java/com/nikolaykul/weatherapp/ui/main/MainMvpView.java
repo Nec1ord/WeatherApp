@@ -1,7 +1,7 @@
 package com.nikolaykul.weatherapp.ui.main;
 
 import com.nikolaykul.weatherapp.data.model.Forecast;
-import com.nikolaykul.weatherapp.ui.base.NetworkMvpView;
+import com.nikolaykul.weatherapp.ui.base.view.NetworkMvpView;
 
 import java.util.List;
 

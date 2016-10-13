@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.ui.base;
+package com.nikolaykul.weatherapp.ui.base.view;
 
 import android.support.annotation.StringRes;
 

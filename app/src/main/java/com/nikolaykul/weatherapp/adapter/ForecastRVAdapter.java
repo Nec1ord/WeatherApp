@@ -44,7 +44,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Fo
     }
 
     class ForecastViewHolder extends RecyclerView.ViewHolder {
-        private ItemWeatherBinding mBinding;
+        private final ItemWeatherBinding mBinding;
 
         public ForecastViewHolder(View view) {
             super(view);

@@ -10,7 +10,7 @@ import com.nikolaykul.weatherapp.adapter.ForecastRVAdapter;
 import com.nikolaykul.weatherapp.data.model.Forecast;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
-import com.nikolaykul.weatherapp.ui.base.BaseMvpNetworkActivity;
+import com.nikolaykul.weatherapp.ui.base.activity.BaseMvpNetworkActivity;
 import com.nikolaykul.weatherapp.util.ItemSpaceDecoration;
 
 import java.util.Collections;

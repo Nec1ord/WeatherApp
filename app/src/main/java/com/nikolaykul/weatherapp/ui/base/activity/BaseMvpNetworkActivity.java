@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.ui.base;
+package com.nikolaykul.weatherapp.ui.base.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nikolaykul.weatherapp.R;
+import com.nikolaykul.weatherapp.ui.base.presenter.Presenter;
+import com.nikolaykul.weatherapp.ui.base.view.MvpView;
+import com.nikolaykul.weatherapp.ui.base.view.NetworkMvpView;
 
 public abstract class BaseMvpNetworkActivity<TView extends MvpView, TPresenter extends Presenter<TView>>
         extends BaseMvpActivity<TView, TPresenter> implements NetworkMvpView {

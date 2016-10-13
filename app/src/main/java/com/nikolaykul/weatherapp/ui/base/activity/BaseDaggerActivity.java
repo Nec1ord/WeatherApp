@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.ui.base;
+package com.nikolaykul.weatherapp.ui.base.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

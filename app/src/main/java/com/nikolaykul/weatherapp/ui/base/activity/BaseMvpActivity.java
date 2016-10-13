@@ -1,7 +1,10 @@
-package com.nikolaykul.weatherapp.ui.base;
+package com.nikolaykul.weatherapp.ui.base.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
+import com.nikolaykul.weatherapp.ui.base.presenter.Presenter;
+import com.nikolaykul.weatherapp.ui.base.view.MvpView;
 
 import javax.inject.Inject;
 

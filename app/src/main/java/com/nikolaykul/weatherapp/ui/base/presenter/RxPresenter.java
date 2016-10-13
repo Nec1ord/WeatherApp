@@ -1,16 +1,23 @@
-package com.nikolaykul.weatherapp.ui.base;
+package com.nikolaykul.weatherapp.ui.base.presenter;
 
 import android.support.annotation.CallSuper;
+
+import com.nikolaykul.weatherapp.ui.base.view.MvpView;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class RxPresenter<T extends MvpView> extends Presenter<T> {
+public class RxPresenter<T extends MvpView> extends Presenter<T> {
     private CompositeSubscription mSubscriptions;
 
     @CallSuper
     @Override
-    protected void onDestroy() {
+    public void onResume() {
+    }
+
+    @CallSuper
+    @Override
+    public void onDestroy() {
         clearSubscriptions();
     }
 
