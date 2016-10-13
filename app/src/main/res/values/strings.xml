@@ -1,3 +1,4 @@
 <resources>
     <string name="message_loading">Loading…</string>
+    <string name="forecast_icon">Forecast icon</string>
 </resources>
