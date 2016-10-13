@@ -6,13 +6,13 @@ import android.os.Bundle;
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
-import com.nikolaykul.weatherapp.ui.base.BaseMvpActivity;
+import com.nikolaykul.weatherapp.ui.base.BaseMvpNetworkActivity;
 
 import javax.inject.Inject;
 
 import timber.log.Timber;
 
-public class MainActivity extends BaseMvpActivity<MainPresenter, ActivityMainBinding>
+public class MainActivity extends BaseMvpNetworkActivity<MainPresenter, ActivityMainBinding>
         implements MainMvpView {
     @Inject protected MainPresenter mPresenter;
 
