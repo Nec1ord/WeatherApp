@@ -4,17 +4,24 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-abstract class BaseMvpActivity<TPresenter extends Presenter, TBinding extends ViewDataBinding>
+import javax.inject.Inject;
+
+abstract class BaseMvpActivity<
+        TPresenter extends Presenter<TView>,
+        TView extends MvpView,
+        TBinding extends ViewDataBinding>
         extends BaseDaggerActivity {
     protected TBinding mBinding;
+    @Inject protected TPresenter mPresenter;
 
-    protected abstract TPresenter getPresenter();
+    protected abstract TView getMvpView();
 
     protected abstract TBinding createBinding();
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = createBinding();
+        mPresenter.attachMvpView(getMvpView());
     }
 
     @Override protected void onResume() {
@@ -29,6 +36,10 @@ abstract class BaseMvpActivity<TPresenter extends Presenter, TBinding extends Vi
             getPresenter().onResume();
         }
         super.onDestroy();
+    }
+
+    protected TPresenter getPresenter() {
+        return mPresenter;
     }
 
 }

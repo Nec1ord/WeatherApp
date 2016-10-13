@@ -9,8 +9,11 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nikolaykul.weatherapp.R;
 
-public abstract class BaseMvpNetworkActivity<TPresenter extends Presenter, TBinding extends ViewDataBinding>
-        extends BaseMvpActivity<TPresenter, TBinding> implements NetworkMvpView {
+public abstract class BaseMvpNetworkActivity<
+        TPresenter extends Presenter<TView>,
+        TView extends MvpView,
+        TBinding extends ViewDataBinding>
+        extends BaseMvpActivity<TPresenter, TView, TBinding> implements NetworkMvpView {
     private MaterialDialog mStub;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {

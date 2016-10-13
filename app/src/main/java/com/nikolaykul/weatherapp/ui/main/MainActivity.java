@@ -8,13 +8,10 @@ import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
 import com.nikolaykul.weatherapp.ui.base.BaseMvpNetworkActivity;
 
-import javax.inject.Inject;
-
 import timber.log.Timber;
 
-public class MainActivity extends BaseMvpNetworkActivity<MainPresenter, ActivityMainBinding>
+public class MainActivity extends BaseMvpNetworkActivity<MainPresenter, MainMvpView, ActivityMainBinding>
         implements MainMvpView {
-    @Inject protected MainPresenter mPresenter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +25,8 @@ public class MainActivity extends BaseMvpNetworkActivity<MainPresenter, Activity
         return DataBindingUtil.setContentView(this, R.layout.activity_main);
     }
 
-    @Override protected MainPresenter getPresenter() {
-        return mPresenter;
+    @Override protected MainMvpView getMvpView() {
+        return this;
     }
 
     @Override public void showWeather() {
