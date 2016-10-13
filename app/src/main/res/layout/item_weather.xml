@@ -53,7 +53,7 @@
                 tools:text="Tuesday"
                 />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/tv_title"
@@ -66,6 +66,7 @@
                 android:text="@{item.description}"
                 android:textColor="@android:color/background_dark"
                 android:textSize="@dimen/text_size_small"
+                app:minTextSize="@dimen/text_size_tiny"
                 tools:text="Some forecast description goes here..."
                 />
 
