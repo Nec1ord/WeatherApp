@@ -17,8 +17,9 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_height_medium"
-        android:background="@color/light_gray"
+        android:background="@{item.period % 2 == 0 ? @color/light_gray : @color/gray}"
         app:elevation="@dimen/elevation_small"
+        tools:background="@color/light_gray"
         >
 
         <RelativeLayout

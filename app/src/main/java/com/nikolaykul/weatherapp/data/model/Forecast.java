@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Forecast {
 
-    @SerializedName("period") public String period;
+    @SerializedName("period") public int period;
 
     @SerializedName("icon_url") public String iconUrl;
 
