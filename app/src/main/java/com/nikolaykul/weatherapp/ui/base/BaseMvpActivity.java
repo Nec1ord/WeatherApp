@@ -1,5 +1,6 @@
 package com.nikolaykul.weatherapp.ui.base;
 
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -8,28 +9,32 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nikolaykul.weatherapp.R;
 
-import javax.inject.Inject;
-
-public abstract class BaseMvpActivity<P extends Presenter<? extends MvpView>>
+public abstract class BaseMvpActivity<TPresenter extends Presenter, TBinding extends ViewDataBinding>
         extends BaseActivity implements NetworkMvpView {
-    @Inject protected P mPresenter;
+    protected TBinding mBinding;
     private MaterialDialog mStub;
 
-    protected abstract <V extends MvpView> V getMvpView();
+    protected abstract TPresenter getPresenter();
+
+    protected abstract TBinding createBinding();
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mStub = createStub();
-        mPresenter.attachMvpView(getMvpView());
+        mBinding = createBinding();
     }
 
     @Override protected void onResume() {
         super.onResume();
-        mPresenter.onResume();
+        if (getPresenter() != null) {
+            getPresenter().onResume();
+        }
     }
 
     @Override protected void onDestroy() {
-        mPresenter.onDestroy();
+        if (getPresenter() != null) {
+            getPresenter().onResume();
+        }
         super.onDestroy();
     }
 

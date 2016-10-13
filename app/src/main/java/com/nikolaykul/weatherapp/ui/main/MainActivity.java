@@ -1,21 +1,39 @@
 package com.nikolaykul.weatherapp.ui.main;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import com.nikolaykul.weatherapp.R;
+import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
-import com.nikolaykul.weatherapp.ui.base.BaseActivity;
+import com.nikolaykul.weatherapp.ui.base.BaseMvpActivity;
 
-public class MainActivity extends BaseActivity {
+import javax.inject.Inject;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+import timber.log.Timber;
+
+public class MainActivity extends BaseMvpActivity<MainPresenter, ActivityMainBinding>
+        implements MainMvpView {
+    @Inject protected MainPresenter mPresenter;
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
     }
 
     @Override protected void injectSelf(ActivityComponent activityComponent) {
         activityComponent.inject(this);
+    }
+
+    @Override protected ActivityMainBinding createBinding() {
+        return DataBindingUtil.setContentView(this, R.layout.activity_main);
+    }
+
+    @Override protected MainPresenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override public void showWeather() {
+        Timber.i("Should show weather");
     }
 
 }
