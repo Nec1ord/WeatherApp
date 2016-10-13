@@ -10,7 +10,7 @@ public class Forecast {
 
     @SerializedName("title") public String title;
 
-    @SerializedName("fcttext") public String description;
+    @SerializedName("fcttext_metric") public String description;
 
     @Override public String toString() {
         return period + ", " +
