@@ -4,9 +4,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import com.nikolaykul.weatherapp.R;
+import com.nikolaykul.weatherapp.data.model.Forecast;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
 import com.nikolaykul.weatherapp.ui.base.BaseMvpNetworkActivity;
+
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -19,6 +22,11 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
     }
 
+    @Override protected void onResume() {
+        super.onResume();
+        mPresenter.loadTodayForecast();
+    }
+
     @Override protected void injectSelf(ActivityComponent activityComponent) {
         activityComponent.inject(this);
     }
@@ -27,8 +35,10 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         return this;
     }
 
-    @Override public void showWeather() {
-        Timber.i("Should show weather");
+    @Override public void showTodayForecast(List<Forecast> forecasts) {
+        for (Forecast forecast : forecasts) {
+            Timber.d("Forecast -> %s\n", forecast.toString());
+        }
     }
 
 }

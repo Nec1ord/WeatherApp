@@ -1,16 +1,21 @@
 package com.nikolaykul.weatherapp.ui.main;
 
+import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.di.activity.PerActivity;
 import com.nikolaykul.weatherapp.ui.base.Presenter;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 @PerActivity
 public class MainPresenter extends Presenter<MainMvpView> {
+    private WeatherApi mApi;
 
-    @Inject public MainPresenter() {
+    @Inject public MainPresenter(WeatherApi api) {
+        mApi = api;
         Timber.i("Created");
     }
 
@@ -20,6 +25,20 @@ public class MainPresenter extends Presenter<MainMvpView> {
 
     @Override protected void onDestroy() {
         Timber.i("onDestroy");
+    }
+
+    public void loadTodayForecast() {
+        mApi.fetchForecast()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(getMvpView()::showLoading)
+                .doAfterTerminate(getMvpView()::hideLoading)
+                .map(forecastRequestModel -> forecastRequestModel.forecastRequest.textForecast.forecasts)
+                .subscribe(
+                        getMvpView()::showTodayForecast,
+                        throwable -> {
+                            Timber.e(throwable, "Some error occurred");
+                        });
     }
 
 }
