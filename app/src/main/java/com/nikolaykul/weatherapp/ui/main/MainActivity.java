@@ -10,19 +10,17 @@ import com.nikolaykul.weatherapp.ui.base.BaseMvpNetworkActivity;
 
 import timber.log.Timber;
 
-public class MainActivity extends BaseMvpNetworkActivity<MainPresenter, MainMvpView, ActivityMainBinding>
+public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresenter>
         implements MainMvpView {
+    private ActivityMainBinding mBinding;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
     }
 
     @Override protected void injectSelf(ActivityComponent activityComponent) {
         activityComponent.inject(this);
-    }
-
-    @Override protected ActivityMainBinding createBinding() {
-        return DataBindingUtil.setContentView(this, R.layout.activity_main);
     }
 
     @Override protected MainMvpView getMvpView() {

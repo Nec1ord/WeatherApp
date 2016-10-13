@@ -1,6 +1,5 @@
 package com.nikolaykul.weatherapp.ui.base;
 
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -9,11 +8,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nikolaykul.weatherapp.R;
 
-public abstract class BaseMvpNetworkActivity<
-        TPresenter extends Presenter<TView>,
-        TView extends MvpView,
-        TBinding extends ViewDataBinding>
-        extends BaseMvpActivity<TPresenter, TView, TBinding> implements NetworkMvpView {
+public abstract class BaseMvpNetworkActivity<TView extends MvpView, TPresenter extends Presenter<TView>>
+        extends BaseMvpActivity<TView, TPresenter> implements NetworkMvpView {
     private MaterialDialog mStub;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {

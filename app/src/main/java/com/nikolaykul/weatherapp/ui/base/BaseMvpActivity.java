@@ -1,26 +1,18 @@
 package com.nikolaykul.weatherapp.ui.base;
 
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
-abstract class BaseMvpActivity<
-        TPresenter extends Presenter<TView>,
-        TView extends MvpView,
-        TBinding extends ViewDataBinding>
+public abstract class BaseMvpActivity<TView extends MvpView, TPresenter extends Presenter<TView>>
         extends BaseDaggerActivity {
-    protected TBinding mBinding;
     @Inject protected TPresenter mPresenter;
 
     protected abstract TView getMvpView();
 
-    protected abstract TBinding createBinding();
-
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = createBinding();
         mPresenter.attachMvpView(getMvpView());
     }
 
