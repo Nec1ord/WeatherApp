@@ -10,7 +10,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.nikolaykul.weatherapp.R;
 
 public abstract class BaseMvpActivity<TPresenter extends Presenter, TBinding extends ViewDataBinding>
-        extends BaseActivity implements NetworkMvpView {
+        extends BaseDaggerActivity implements NetworkMvpView {
     protected TBinding mBinding;
     private MaterialDialog mStub;
 

@@ -9,7 +9,7 @@ import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
 import com.nikolaykul.weatherapp.di.activity.ActivityModule;
 import com.nikolaykul.weatherapp.di.activity.DaggerActivityComponent;
 
-public abstract class BaseActivity extends AppCompatActivity {
+abstract class BaseDaggerActivity extends AppCompatActivity {
 
     protected abstract void injectSelf(ActivityComponent activityComponent);
 
