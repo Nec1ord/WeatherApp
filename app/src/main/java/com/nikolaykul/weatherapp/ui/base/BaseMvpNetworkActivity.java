@@ -31,7 +31,7 @@ public abstract class BaseMvpNetworkActivity<TView extends MvpView, TPresenter e
 
     private MaterialDialog createStub() {
         return new MaterialDialog.Builder(this)
-                .content(R.string.R_string_message_loading)
+                .content(R.string.message_loading)
                 .cancelable(false)
                 .progress(true, 0)
                 .build();
