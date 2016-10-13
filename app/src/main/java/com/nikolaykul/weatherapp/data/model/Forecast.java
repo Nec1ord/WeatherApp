@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Forecast {
 
-    @SerializedName("period") private String period;
+    @SerializedName("period") public String period;
 
-    @SerializedName("icon_url") private String iconUrl;
+    @SerializedName("icon_url") public String iconUrl;
 
-    @SerializedName("title") private String title;
+    @SerializedName("title") public String title;
 
-    @SerializedName("fcttext") private String description;
+    @SerializedName("fcttext") public String description;
 
     @Override public String toString() {
         return period + ", " +
