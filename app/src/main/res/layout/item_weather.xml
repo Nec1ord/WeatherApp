@@ -16,38 +16,60 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_height_small"
+        android:layout_height="@dimen/view_height_medium"
         android:background="@color/light_gray"
         app:elevation="@dimen/elevation_small"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             >
 
             <ImageView
+                android:id="@+id/iv_icon"
                 android:layout_width="@dimen/view_width_small"
                 android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:contentDescription="@string/forecast_icon"
-                android:padding="@dimen/padding_small"
-                android:scaleType="centerCrop"
+                android:padding="@dimen/padding_medium"
+                android:scaleType="fitCenter"
                 app:imageUrl="@{item.iconUrl}"
                 tools:src="@drawable/forecast_placeholder"
                 />
 
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/view_height_small"
+                android:layout_toEndOf="@+id/iv_icon"
+                android:layout_toRightOf="@+id/iv_icon"
                 android:gravity="center"
-                android:text="@{item.description}"
+                android:text="@{item.title}"
                 android:textColor="@android:color/background_dark"
                 android:textSize="@dimen/text_size_medium"
+                tools:text="Tuesday"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_title"
+                android:layout_toEndOf="@+id/iv_icon"
+                android:layout_toRightOf="@+id/iv_icon"
+                android:gravity="top"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingLeft="@dimen/padding_small"
+                android:paddingRight="@dimen/padding_small"
+                android:text="@{item.description}"
+                android:textColor="@android:color/background_dark"
+                android:textSize="@dimen/text_size_small"
                 tools:text="Some forecast description goes here..."
                 />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
