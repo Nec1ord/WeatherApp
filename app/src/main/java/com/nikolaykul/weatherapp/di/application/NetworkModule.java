@@ -6,7 +6,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -21,7 +24,20 @@ class NetworkModule {
     @Provides
     @Singleton
     OkHttpClient provideClient() {
-        return new OkHttpClient();
+        final Interceptor authInterceptor = chain -> {
+            final Request origin = chain.request();
+            final HttpUrl url = origin.url().newBuilder()
+                    .addQueryParameter(WeatherApi.KEY_NAME, WeatherApi.KEY_VALUE)
+                    .addQueryParameter(WeatherApi.METRIC_NAME, WeatherApi.METRIC_VALUE)
+                    .build();
+            final Request request = origin.newBuilder()
+                    .url(url)
+                    .build();
+            return chain.proceed(request);
+        };
+        return new OkHttpClient.Builder()
+                .addInterceptor(authInterceptor)
+                .build();
     }
 
     @Provides

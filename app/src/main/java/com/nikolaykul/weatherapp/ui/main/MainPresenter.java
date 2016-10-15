@@ -6,6 +6,7 @@ import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -23,15 +24,20 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
 
         // TODO: handle errors
 
-        final Subscription sub = mApi.fetchForecast()
+        final double lat = 23.21421421;
+        final double lon = 42.464624622;
+        final int count = 4;
+
+        final Subscription sub = mApi.fetchForecast(lat, lon, count)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(getMvpView()::showLoading)
                 .doAfterTerminate(getMvpView()::hideLoading)
-                .map(forecastRequestModel ->
-                        forecastRequestModel.forecastRequest.textForecast.forecasts)
+                .map(request -> request.forecasts)
+                .flatMap(Observable::from)
+                .map(Object::toString)
                 .subscribe(
-                        getMvpView()::showTodayForecast,
+                        Timber::d,
                         throwable -> {
                             Timber.e(throwable, "Some error occurred");
                         });
