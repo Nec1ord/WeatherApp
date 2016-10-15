@@ -53,7 +53,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
     private void initRecyclerView(RecyclerView recyclerView) {
         final ItemSpaceDecoration spaceDecoration =
                 new ItemSpaceDecoration(ItemSpaceDecoration.Side.BOTTOM,
-                        (int) getResources().getDimension(R.dimen.item_space_small));
+                        getResources().getDimensionPixelSize(R.dimen.item_space_small));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(spaceDecoration);
         recyclerView.setAdapter(mAdapter);
