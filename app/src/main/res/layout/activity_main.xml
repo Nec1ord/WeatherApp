@@ -15,41 +15,54 @@
 
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/item_space_small"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         >
 
-        <LinearLayout
+        <include
+            android:id="@+id/include_toolbar"
+            layout="@layout/toolbar"
+            />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/item_space_small"
             >
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="false"
-                android:gravity="center"
-                android:text="@string/hint_swipe"
-                android:visibility="@{hasItems ? View.GONE : View.VISIBLE}"
-                tools:visibility="gone"
-                />
+                android:orientation="vertical"
+                >
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="@{hasItems ? View.VISIBLE : View.GONE}"
-                tools:listitem="@layout/item_weather"
-                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:text="@string/hint_swipe"
+                    android:visibility="@{hasItems ? View.GONE : View.VISIBLE}"
+                    tools:visibility="gone"
+                    />
 
-        </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{hasItems ? View.VISIBLE : View.GONE}"
+                    tools:listitem="@layout/item_weather"
+                    />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            </LinearLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
 
 </layout>

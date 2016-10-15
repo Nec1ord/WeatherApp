@@ -2,8 +2,13 @@ package com.nikolaykul.weatherapp.ui.main;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.adapter.ForecastRVAdapter;
@@ -16,6 +21,8 @@ import com.nikolaykul.weatherapp.util.ItemSpaceDecoration;
 import java.util.Collections;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresenter>
         implements MainMvpView {
     private ActivityMainBinding mBinding;
@@ -26,6 +33,29 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mAdapter = new ForecastRVAdapter(Collections.emptyList());
         initRecyclerView(mBinding.recyclerView);
+        initToolbar(mBinding.includeToolbar.toolbar);
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override public boolean onQueryTextSubmit(String query) {
+                Timber.d("Query: %s", query);
+                if (!searchView.isIconified()) {
+                    searchView.setIconified(true);
+                }
+                searchItem.collapseActionView();
+                return false;
+            }
+
+            @Override public boolean onQueryTextChange(String newText) {
+                Timber.d("New text: %s", newText);
+                return false;
+            }
+        });
+        return true;
     }
 
     @Override protected void injectSelf(ActivityComponent activityComponent) {
@@ -58,6 +88,14 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         recyclerView.addItemDecoration(spaceDecoration);
         recyclerView.setAdapter(mAdapter);
         mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);
+    }
+
+    private void initToolbar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.title_main);
+        }
     }
 
 }

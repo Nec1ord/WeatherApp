@@ -2,4 +2,7 @@
     <string name="message_loading">Loading…</string>
     <string name="forecast_icon">Forecast icon</string>
     <string name="hint_swipe">Swipe to refresh</string>
+    <string name="action_search">Search</string>
+    <string name="action_geo">Find me</string>
+    <string name="title_main">Forecast</string>
 </resources>
