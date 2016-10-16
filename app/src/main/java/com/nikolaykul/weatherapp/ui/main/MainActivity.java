@@ -11,13 +11,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AutoCompleteTextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nikolaykul.weatherapp.R;
+import com.nikolaykul.weatherapp.adapter.CitiesAdapter;
 import com.nikolaykul.weatherapp.adapter.ForecastRVAdapter;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
@@ -28,11 +29,12 @@ import com.nikolaykul.weatherapp.ui.base.activity.BaseMvpNetworkActivity;
 import java.util.Collections;
 import java.util.List;
 
-import timber.log.Timber;
+import javax.inject.Inject;
 
 public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresenter>
         implements MainMvpView {
     private static final int PERMISSION_LOCATION_CODE = 1;
+    @Inject protected CitiesAdapter mCitiesAdapter;
     private ActivityMainBinding mBinding;
     private ForecastRVAdapter mAdapter;
     private MaterialDialog mGpsDialog;
@@ -62,26 +64,24 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         getMenuInflater().inflate(R.menu.main_menu, menu);
         // search
         final MenuItem itemSearch = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) itemSearch.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override public boolean onQueryTextSubmit(String query) {
-                Timber.d("Query: %s", query);
-                if (!searchView.isIconified()) {
-                    searchView.setIconified(true);
-                }
+        final AutoCompleteTextView actv =
+                (AutoCompleteTextView) getLayoutInflater().inflate(R.layout.search_view, null);
+        itemSearch.setActionView(actv);
+        actv.setAdapter(mCitiesAdapter);
+        actv.setThreshold(1);
+        actv.setOnItemClickListener((adapterView, view, i, l) -> {
+            if (itemSearch.isActionViewExpanded()) {
                 itemSearch.collapseActionView();
-                return false;
             }
-
-            @Override public boolean onQueryTextChange(String newText) {
-                Timber.d("New text: %s", newText);
-                return false;
-            }
+            mPresenter.setCity(mCitiesAdapter.getItem(i));
+            mPresenter.loadTodayForecast();
         });
         // geo
         final MenuItem itemGeo = menu.findItem(R.id.action_geo);
         itemGeo.setOnMenuItemClickListener(menuItem -> {
-            if (itemSearch.isActionViewExpanded()) itemSearch.collapseActionView();
+            if (itemSearch.isActionViewExpanded()) {
+                itemSearch.collapseActionView();
+            }
             mPresenter.clearCity();
             mPresenter.loadTodayForecast();
             return false;
