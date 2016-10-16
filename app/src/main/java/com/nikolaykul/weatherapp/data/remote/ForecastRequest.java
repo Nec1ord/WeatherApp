@@ -1,7 +1,7 @@
 package com.nikolaykul.weatherapp.data.remote;
 
 import com.google.gson.annotations.SerializedName;
-import com.nikolaykul.weatherapp.data.model.Forecast;
+import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 
 import java.util.List;
 

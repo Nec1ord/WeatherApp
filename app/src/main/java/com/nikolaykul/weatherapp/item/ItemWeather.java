@@ -1,7 +1,7 @@
 package com.nikolaykul.weatherapp.item;
 
-import com.nikolaykul.weatherapp.data.model.Forecast;
-import com.nikolaykul.weatherapp.data.model.ForecastWeather;
+import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
+import com.nikolaykul.weatherapp.data.model.forecast.ForecastWeather;
 
 import java.util.Locale;
 

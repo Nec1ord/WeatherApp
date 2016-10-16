@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.data.model;
+package com.nikolaykul.weatherapp.data.model.forecast;
 
 import com.google.gson.annotations.SerializedName;
 
