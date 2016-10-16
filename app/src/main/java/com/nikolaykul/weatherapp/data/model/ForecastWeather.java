@@ -10,4 +10,7 @@ public class ForecastWeather {
     @SerializedName("icon")
     public String icon;
 
+    @SerializedName("description")
+    public String description;
+
 }

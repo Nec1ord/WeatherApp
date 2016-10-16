@@ -15,4 +15,10 @@ public class Forecast {
     @SerializedName("weather")
     public List<ForecastWeather> weatherList;
 
+    @SerializedName("pressure")
+    public double pressure;
+
+    @SerializedName("humidity")
+    public double humidity;
+
 }
