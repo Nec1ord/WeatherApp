@@ -1,11 +1,16 @@
 package com.nikolaykul.weatherapp.di.application;
 
+import android.content.Context;
+
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
+
+import java.io.File;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -19,11 +24,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 class NetworkModule {
 
-    // TODO: provide cache for OkHttpClient
+    @Provides
+    @Singleton
+    Cache provideCache(@AppContext Context context) {
+        final File cacheDir = new File(context.getCacheDir(), "cache");
+        return new Cache(cacheDir, 10 * 1024 * 1024);
+    }
 
     @Provides
     @Singleton
-    OkHttpClient provideClient() {
+    OkHttpClient provideClient(Cache cache) {
         final Interceptor authInterceptor = chain -> {
             final Request origin = chain.request();
             final HttpUrl url = origin.url().newBuilder()
@@ -36,6 +46,7 @@ class NetworkModule {
             return chain.proceed(request);
         };
         return new OkHttpClient.Builder()
+                .cache(cache)
                 .addInterceptor(authInterceptor)
                 .build();
     }
