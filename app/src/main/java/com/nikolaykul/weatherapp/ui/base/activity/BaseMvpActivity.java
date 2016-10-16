@@ -21,20 +21,12 @@ public abstract class BaseMvpActivity<TView extends MvpView, TPresenter extends 
 
     @Override protected void onResume() {
         super.onResume();
-        if (getPresenter() != null) {
-            getPresenter().onResume();
-        }
+        mPresenter.onResume();
     }
 
     @Override protected void onDestroy() {
-        if (getPresenter() != null) {
-            getPresenter().onResume();
-        }
+        mPresenter.onDestroy();
         super.onDestroy();
-    }
-
-    protected TPresenter getPresenter() {
-        return mPresenter;
     }
 
 }

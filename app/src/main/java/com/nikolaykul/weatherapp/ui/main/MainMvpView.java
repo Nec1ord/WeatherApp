@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface MainMvpView extends NetworkMvpView {
     void showTodayForecast(List<ItemWeather> forecasts);
+
+    void askLocationPermissions();
+
+    void askToEnableGps();
 }

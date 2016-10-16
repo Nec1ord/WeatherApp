@@ -5,4 +5,10 @@
     <string name="action_search">Search</string>
     <string name="action_geo">Find me</string>
     <string name="title_main">Forecast</string>
+    <string name="error_network">No internet connection</string>
+    <string name="error_default">Server error</string>
+    <string name="dialog_gps_title">Enable GSP</string>
+    <string name="dialog_gps_content">You should enable GPS in your settings</string>
+    <string name="ok">OK</string>
+    <string name="no">NO</string>
 </resources>

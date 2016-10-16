@@ -17,4 +17,8 @@ public interface WeatherApi {
                                               @Query("lon") double lon,
                                               @Query("cnt") int dayCount);
 
+    @GET("data/2.5/forecast/daily")
+    Observable<ForecastRequest> fetchForecast(@Query("q") String city,
+                                              @Query("cnt") int dayCount);
+
 }
