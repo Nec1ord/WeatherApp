@@ -83,6 +83,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
             if (itemSearch.isActionViewExpanded()) {
                 itemSearch.collapseActionView();
             }
+            actv.setText("");
             mPresenter.clearCity();
             mPresenter.loadTodayForecast();
             return false;
