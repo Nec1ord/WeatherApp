@@ -56,18 +56,6 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Fo
         notifyDataSetChanged();
     }
 
-    class ForecastVHHeader extends ForecastVH<ItemTodayWeatherBinding> {
-        ForecastVHHeader(View view) {
-            super(view);
-        }
-    }
-
-    class ForecastVHContent extends ForecastVH<ItemWeatherBinding> {
-        ForecastVHContent(View view) {
-            super(view);
-        }
-    }
-
     abstract class ForecastVH<TBinding extends ViewDataBinding> extends RecyclerView.ViewHolder {
         private final TBinding mBinding;
 
@@ -78,6 +66,18 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Fo
 
         public void setItem(ItemWeather item) {
             mBinding.setVariable(BR.item, item);
+        }
+    }
+
+    private class ForecastVHHeader extends ForecastVH<ItemTodayWeatherBinding> {
+        ForecastVHHeader(View view) {
+            super(view);
+        }
+    }
+
+    private class ForecastVHContent extends ForecastVH<ItemWeatherBinding> {
+        ForecastVHContent(View view) {
+            super(view);
         }
     }
 
