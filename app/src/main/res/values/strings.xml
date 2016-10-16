@@ -7,6 +7,7 @@
     <string name="title_main">Forecast</string>
     <string name="error_network">No internet connection</string>
     <string name="error_default">Server error</string>
+    <string name="error_location">Couldn\'t get current location</string>
     <string name="dialog_gps_title">Enable GSP</string>
     <string name="dialog_gps_content">You should enable GPS in your settings</string>
     <string name="ok">OK</string>

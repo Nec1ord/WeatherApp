@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mGpsDialog = createGpsDialog();
         initRecyclerView(mBinding.recyclerView);
         initToolbar(mBinding.includeToolbar.toolbar);
+        mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);
     }
 
     @Override
@@ -107,13 +109,17 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mBinding.swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override public void showError(@StringRes int strId) {
+        super.showError(strId);
+        hideLoading();
+    }
+
     @Override public void showCity(String city) {
-        if (getSupportActionBar() != null) {
-            final String title = StringUtil.isNullOrEmpty(city)
-                    ? getString(R.string.title_main)
-                    : city;
-            getSupportActionBar().setTitle(title);
-        }
+        if (null == getSupportActionBar()) return;
+        final String title = StringUtil.isNullOrEmpty(city)
+                ? getString(R.string.title_main)
+                : city;
+        getSupportActionBar().setTitle(title);
     }
 
     @Override public void showTodayForecast(List<ItemWeather> forecasts) {
@@ -139,7 +145,6 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(spaceDecoration);
         recyclerView.setAdapter(mAdapter);
-        mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);
     }
 
     private void initToolbar(Toolbar toolbar) {

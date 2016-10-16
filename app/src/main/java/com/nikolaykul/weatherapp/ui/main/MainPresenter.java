@@ -4,8 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
 import com.nikolaykul.weatherapp.R;
@@ -25,8 +27,9 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 @PerActivity
-public class MainPresenter extends RxPresenter<MainMvpView> {
+public class MainPresenter extends RxPresenter<MainMvpView> implements LocationListener {
     private static final int FORECAST_COUNT = 7;
+    private final LocationManager mLocationManager;
     private final Context mContext;
     private final WeatherApi mApi;
     private String mCity;
@@ -34,6 +37,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
     @Inject public MainPresenter(Context context, WeatherApi api) {
         mContext = context;
         mApi = api;
+        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
     }
 
     public void setCity(String city) {
@@ -75,9 +79,31 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
         addSubscription(sub);
     }
 
+    @Override public void onLocationChanged(Location location) {
+        // remove updates
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            getMvpView().hideLoading();
+            getMvpView().askLocationPermissions();
+            return;
+        }
+        mLocationManager.removeUpdates(this);
+        // try again
+        loadTodayForecast();
+    }
+
+    @Override public void onStatusChanged(String s, int i, Bundle bundle) {
+    }
+
+    @Override public void onProviderEnabled(String s) {
+    }
+
+    @Override public void onProviderDisabled(String s) {
+        getMvpView().askToEnableGps();
+    }
+
     private Observable<ForecastRequest> fetchForecastFromLocation() {
-        final LocationManager locationManager =
-                (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         // check permissions
         if (Build.VERSION.SDK_INT >= 23 &&
                 ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -88,13 +114,19 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
         }
         // check if gps enabled
         final String gpsProvider = LocationManager.GPS_PROVIDER;
-        if (!locationManager.isProviderEnabled(gpsProvider)) {
+        if (!mLocationManager.isProviderEnabled(gpsProvider)) {
             getMvpView().hideLoading();
             getMvpView().askToEnableGps();
             return null;
         }
+        // check location
+        final Location location = mLocationManager.getLastKnownLocation(gpsProvider);
+        if (null == location) {
+            getMvpView().showError(R.string.error_location);
+            mLocationManager.requestLocationUpdates(gpsProvider, 0, 0, this);
+            return null;
+        }
         // create request observable
-        final Location location = locationManager.getLastKnownLocation(gpsProvider);
         return mApi.fetchForecast(location.getLatitude(), location.getLongitude(), FORECAST_COUNT)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(request -> getMvpView().showCity(request.city.name));
