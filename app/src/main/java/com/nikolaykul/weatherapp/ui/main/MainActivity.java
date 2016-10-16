@@ -68,8 +68,8 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         final AutoCompleteTextView actv =
                 (AutoCompleteTextView) getLayoutInflater().inflate(R.layout.search_view, null);
         itemSearch.setActionView(actv);
-        actv.setAdapter(mCitiesAdapter);
         actv.setThreshold(1);
+        actv.setAdapter(mCitiesAdapter);
         actv.setOnItemClickListener((adapterView, view, i, l) -> {
             if (itemSearch.isActionViewExpanded()) {
                 itemSearch.collapseActionView();
