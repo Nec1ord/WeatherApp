@@ -60,15 +60,16 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
+        // search
+        final MenuItem itemSearch = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) itemSearch.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override public boolean onQueryTextSubmit(String query) {
                 Timber.d("Query: %s", query);
                 if (!searchView.isIconified()) {
                     searchView.setIconified(true);
                 }
-                searchItem.collapseActionView();
+                itemSearch.collapseActionView();
                 return false;
             }
 
@@ -76,6 +77,14 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
                 Timber.d("New text: %s", newText);
                 return false;
             }
+        });
+        // geo
+        final MenuItem itemGeo = menu.findItem(R.id.action_geo);
+        itemGeo.setOnMenuItemClickListener(menuItem -> {
+            if (itemSearch.isActionViewExpanded()) itemSearch.collapseActionView();
+            mPresenter.clearCity();
+            mPresenter.loadTodayForecast();
+            return false;
         });
         return true;
     }
