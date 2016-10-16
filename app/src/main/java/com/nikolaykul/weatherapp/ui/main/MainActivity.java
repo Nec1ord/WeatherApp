@@ -25,6 +25,7 @@ import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
 import com.nikolaykul.weatherapp.item.ItemSpaceDecoration;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.activity.BaseMvpNetworkActivity;
+import com.nikolaykul.weatherapp.util.StringUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -103,6 +104,15 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
 
     @Override public void hideLoading() {
         mBinding.swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override public void showCity(String city) {
+        if (getSupportActionBar() != null) {
+            final String title = StringUtil.isNullOrEmpty(city)
+                    ? getString(R.string.title_main)
+                    : city;
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     @Override public void showTodayForecast(List<ItemWeather> forecasts) {

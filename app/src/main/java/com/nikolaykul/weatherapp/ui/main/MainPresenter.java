@@ -39,10 +39,12 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
 
     public void setCity(String city) {
         mCity = city;
+        getMvpView().showCity(city);
     }
 
     public void clearCity() {
         mCity = null;
+        getMvpView().showCity(null);
     }
 
     public void loadTodayForecast() {

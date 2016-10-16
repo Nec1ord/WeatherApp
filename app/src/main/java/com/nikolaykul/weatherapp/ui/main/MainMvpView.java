@@ -11,4 +11,7 @@ public interface MainMvpView extends NetworkMvpView {
     void askLocationPermissions();
 
     void askToEnableGps();
+
+    void showCity(String city);
+
 }
