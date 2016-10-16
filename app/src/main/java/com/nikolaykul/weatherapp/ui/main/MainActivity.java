@@ -21,9 +21,9 @@ import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.adapter.ForecastRVAdapter;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
+import com.nikolaykul.weatherapp.item.ItemSpaceDecoration;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.activity.BaseMvpNetworkActivity;
-import com.nikolaykul.weatherapp.util.ItemSpaceDecoration;
 
 import java.util.Collections;
 import java.util.List;

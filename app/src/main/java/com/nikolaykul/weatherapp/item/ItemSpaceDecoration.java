@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.util;
+package com.nikolaykul.weatherapp.item;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
