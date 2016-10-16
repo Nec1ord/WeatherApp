@@ -2,20 +2,17 @@ package com.nikolaykul.weatherapp.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Forecast {
 
-    @SerializedName("period") public int period;
+    @SerializedName("dt")
+    public long timestamp;
 
-    @SerializedName("icon_url") public String iconUrl;
+    @SerializedName("temp")
+    public ForecastTemperature temperature;
 
-    @SerializedName("title") public String title;
+    @SerializedName("weather")
+    public List<ForecastWeather> weatherList;
 
-    @SerializedName("fcttext_metric") public String description;
-
-    @Override public String toString() {
-        return period + ", " +
-                iconUrl + ", " +
-                title + ", " +
-                description + ", ";
-    }
 }

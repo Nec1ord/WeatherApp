@@ -7,9 +7,11 @@
 
     <data>
 
+        <import type="com.nikolaykul.weatherapp.util.DateUtil"/>
+
         <variable
             name="item"
-            type="com.nikolaykul.weatherapp.data.model.Forecast"
+            type="com.nikolaykul.weatherapp.item.ItemWeather"
             />
 
     </data>
@@ -17,7 +19,6 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_height_medium"
-        android:background="@{item.period % 2 == 0 ? @color/light_gray : @color/gray}"
         app:elevation="@dimen/elevation_small"
         tools:background="@color/light_gray"
         >
@@ -36,8 +37,8 @@
                 android:layout_alignParentStart="true"
                 android:contentDescription="@string/forecast_icon"
                 android:padding="@dimen/padding_medium"
-                android:scaleType="fitCenter"
-                app:imageUrl="@{item.iconUrl}"
+                android:scaleType="centerCrop"
+                app:iconUrl="@{item.icon}"
                 tools:src="@drawable/forecast_placeholder"
                 />
 
@@ -48,28 +49,54 @@
                 android:layout_toEndOf="@+id/iv_icon"
                 android:layout_toRightOf="@+id/iv_icon"
                 android:gravity="center"
-                android:text="@{item.title}"
-                android:textColor="@android:color/background_dark"
+                android:text="@{DateUtil.getDayFromTimestamp(item.timestamp)}"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_medium"
                 tools:text="Tuesday"
                 />
 
-            <me.grantland.widget.AutofitTextView
+            <TextView
+                android:id="@+id/tv_weather"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="30dp"
                 android:layout_below="@+id/tv_title"
                 android:layout_toEndOf="@+id/iv_icon"
                 android:layout_toRightOf="@+id/iv_icon"
-                android:gravity="top"
-                android:paddingBottom="@dimen/padding_small"
-                android:paddingLeft="@dimen/padding_small"
-                android:paddingRight="@dimen/padding_small"
-                android:text="@{item.description}"
-                android:textColor="@android:color/background_dark"
+                android:gravity="center"
+                android:text='@{String.format("Weather: %s", item.title)}'
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_small"
-                app:minTextSize="@dimen/text_size_tiny"
-                tools:text="Some forecast description goes here..."
+                tools:text="Weather: Rain"
                 />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_weather"
+                android:layout_toEndOf="@+id/iv_icon"
+                android:layout_toRightOf="@+id/iv_icon"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text='@{String.format("Min: %s\u2103", item.tempMin)}'
+                    tools:text="Min: 46.64\u2103"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text='@{String.format("Max: %s\u2103", item.tempMax)}'
+                    tools:text="Max: 50.79\u2103"
+                    />
+
+            </LinearLayout>
 
         </RelativeLayout>
 

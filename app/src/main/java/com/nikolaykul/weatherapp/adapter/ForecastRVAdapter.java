@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nikolaykul.weatherapp.R;
-import com.nikolaykul.weatherapp.data.model.Forecast;
 import com.nikolaykul.weatherapp.databinding.ItemWeatherBinding;
+import com.nikolaykul.weatherapp.item.ItemWeather;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.ForecastViewHolder> {
-    private List<Forecast> mItems;
+    private List<ItemWeather> mItems;
 
-    public ForecastRVAdapter(List<Forecast> items) {
+    public ForecastRVAdapter(List<ItemWeather> items) {
         super();
         mItems = items;
     }
@@ -38,7 +38,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Fo
         return new ForecastViewHolder(binding.getRoot());
     }
 
-    public void replaceItems(List<Forecast> items) {
+    public void replaceItems(List<ItemWeather> items) {
         mItems = new ArrayList<>(items);
         notifyDataSetChanged();
     }
@@ -51,7 +51,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Fo
             mBinding = DataBindingUtil.bind(view);
         }
 
-        public void setItem(Forecast item) {
+        public void setItem(ItemWeather item) {
             mBinding.setItem(item);
         }
 

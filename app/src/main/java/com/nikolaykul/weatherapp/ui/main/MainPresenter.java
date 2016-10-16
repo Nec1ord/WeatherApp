@@ -2,6 +2,7 @@ package com.nikolaykul.weatherapp.ui.main;
 
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.di.activity.PerActivity;
+import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
 
 import javax.inject.Inject;
@@ -35,9 +36,10 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
                 .doAfterTerminate(getMvpView()::hideLoading)
                 .map(request -> request.forecasts)
                 .flatMap(Observable::from)
-                .map(Object::toString)
+                .map(ItemWeather::new)
+                .toList()
                 .subscribe(
-                        Timber::d,
+                        getMvpView()::showTodayForecast,
                         throwable -> {
                             Timber.e(throwable, "Some error occurred");
                         });

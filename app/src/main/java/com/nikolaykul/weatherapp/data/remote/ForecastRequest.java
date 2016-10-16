@@ -1,13 +1,13 @@
 package com.nikolaykul.weatherapp.data.remote;
 
 import com.google.gson.annotations.SerializedName;
-import com.nikolaykul.weatherapp.data.model.DayForecast;
+import com.nikolaykul.weatherapp.data.model.Forecast;
 
 import java.util.List;
 
 public class ForecastRequest {
 
     @SerializedName("list")
-    public List<DayForecast> forecasts;
+    public List<Forecast> forecasts;
 
 }

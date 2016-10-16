@@ -12,9 +12,9 @@ import android.view.MenuItem;
 
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.adapter.ForecastRVAdapter;
-import com.nikolaykul.weatherapp.data.model.Forecast;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
+import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.activity.BaseMvpNetworkActivity;
 import com.nikolaykul.weatherapp.util.ItemSpaceDecoration;
 
@@ -74,7 +74,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mBinding.swipeRefreshLayout.setRefreshing(false);
     }
 
-    @Override public void showTodayForecast(List<Forecast> forecasts) {
+    @Override public void showTodayForecast(List<ItemWeather> forecasts) {
         if (null == forecasts) return;
         mAdapter.replaceItems(forecasts);
         mBinding.setHasItems(!forecasts.isEmpty());
