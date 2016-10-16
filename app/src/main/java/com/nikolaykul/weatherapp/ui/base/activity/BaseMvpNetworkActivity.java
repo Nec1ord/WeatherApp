@@ -20,6 +20,13 @@ public abstract class BaseMvpNetworkActivity<TView extends MvpView, TPresenter e
         mStub = createStub();
     }
 
+    @Override protected void onDestroy() {
+        if (mStub.isShowing()) {
+            mStub.dismiss();
+        }
+        super.onDestroy();
+    }
+
     @Override public void showLoading() {
         mStub.show();
     }
