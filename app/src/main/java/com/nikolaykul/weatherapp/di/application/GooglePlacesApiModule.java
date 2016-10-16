@@ -21,8 +21,8 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 @Module
-public class GooglePlacesApiModule {
-    public static final String API_NAME = "googleApi";
+class GooglePlacesApiModule {
+    private static final String API_NAME = "googleApi";
 
     @Provides
     @Singleton
@@ -39,9 +39,8 @@ public class GooglePlacesApiModule {
         final Interceptor authInterceptor = chain -> {
             final Request origin = chain.request();
             final HttpUrl url = origin.url().newBuilder()
-                    .addQueryParameter("key", "AIzaSyAywgNKCZ1gfGrlNGekrJxAKrHfHEAdewQ")
-//                    .addQueryParameter("components", "country:ru")
-                    .addQueryParameter("types", "(cities)")
+                    .addQueryParameter(GooglePlacesApi.KEY_NAME, GooglePlacesApi.KEY_VALUE)
+                    .addQueryParameter(GooglePlacesApi.TYPES_NAME, GooglePlacesApi.TYPES_VALUE)
                     .build();
             final Request request = origin.newBuilder()
                     .url(url)
@@ -61,7 +60,7 @@ public class GooglePlacesApiModule {
                              Converter.Factory converterFactory,
                              CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/")
+                .baseUrl(GooglePlacesApi.HOST)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(client)
