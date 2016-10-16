@@ -95,7 +95,9 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
         }
         // create request observable
         final Location location = locationManager.getLastKnownLocation(gpsProvider);
-        return mApi.fetchForecast(location.getLatitude(), location.getLongitude(), FORECAST_COUNT);
+        return mApi.fetchForecast(location.getLatitude(), location.getLongitude(), FORECAST_COUNT)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(request -> getMvpView().showCity(request.city.name));
     }
 
     private Observable<ForecastRequest> fetchForecastFromCity() {
