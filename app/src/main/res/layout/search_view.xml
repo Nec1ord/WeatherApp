@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:hint="@string/search_hint"
     android:minWidth="@dimen/view_width_big"
+    android:textColor="@color/light_gray"
     android:textColorHint="@color/gray"
     tools:background="@color/colorPrimaryDark"
     />
