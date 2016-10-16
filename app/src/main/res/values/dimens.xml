@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="elevation_small">4dp</dimen>
     <dimen name="view_width_small">80dp</dimen>
+    <dimen name="view_height_big">180dp</dimen>
     <dimen name="view_height_medium">100dp</dimen>
     <dimen name="view_height_small">40dp</dimen>
     <dimen name="item_space_small">10dp</dimen>
