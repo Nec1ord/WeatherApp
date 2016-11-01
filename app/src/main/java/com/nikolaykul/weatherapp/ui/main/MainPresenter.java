@@ -1,7 +1,6 @@
 package com.nikolaykul.weatherapp.ui.main;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -15,7 +14,7 @@ import com.nikolaykul.weatherapp.data.remote.model.ForecastRequest;
 import com.nikolaykul.weatherapp.di.activity.PerActivity;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
-import com.nikolaykul.weatherapp.util.NetworkUtil;
+import com.nikolaykul.weatherapp.util.NetworkManager;
 
 import javax.inject.Inject;
 
@@ -28,15 +27,17 @@ import timber.log.Timber;
 @PerActivity
 public class MainPresenter extends RxPresenter<MainMvpView> implements LocationListener {
     private static final int FORECAST_COUNT = 7;
-    private final LocationManager mLocationManager;
-    private final Context mContext;
     private final WeatherApi mApi;
+    private final LocationManager mLocationManager;
+    private final NetworkManager mNetworkManager;
     private String mCity;
 
-    @Inject public MainPresenter(Context context, WeatherApi api) {
-        mContext = context;
+    @Inject public MainPresenter(WeatherApi api,
+                                 LocationManager locationManager,
+                                 NetworkManager networkManager) {
         mApi = api;
-        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = locationManager;
+        mNetworkManager = networkManager;
     }
 
     public void setCity(String city) {
@@ -50,7 +51,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
     }
 
     public void loadTodayForecast() {
-        if (!NetworkUtil.isNetworkEnabled(mContext)) {
+        if (!mNetworkManager.isNetworkEnabled()) {
             getMvpView().showError(R.string.error_network);
             return;
         }
@@ -108,7 +109,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
         // check if gps enabled
         final String gpsProvider = LocationManager.GPS_PROVIDER;
         if (!mLocationManager.isProviderEnabled(gpsProvider)) {
-//            getMvpView().hideLoading();
+            getMvpView().hideLoading();
             getMvpView().askToEnableGps();
             return null;
         }
