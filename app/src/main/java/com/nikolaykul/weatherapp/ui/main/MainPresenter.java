@@ -40,14 +40,16 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
         mNetworkManager = networkManager;
     }
 
-    public void setCity(String city) {
+    public void onCitySelected(String city) {
         mCity = city;
         getMvpView().showCity(city);
+        loadTodayForecast();
     }
 
-    public void clearCity() {
+    public void onGeoSelected() {
         mCity = null;
         getMvpView().showCity(null);
+        loadTodayForecast();
     }
 
     public void loadTodayForecast() {

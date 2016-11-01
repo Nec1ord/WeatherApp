@@ -76,8 +76,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
             if (itemSearch.isActionViewExpanded()) {
                 itemSearch.collapseActionView();
             }
-            mPresenter.setCity(mCitiesAdapter.getItem(i));
-            mPresenter.loadTodayForecast();
+            mPresenter.onCitySelected(mCitiesAdapter.getItem(i));
         });
         // geo
         final MenuItem itemGeo = menu.findItem(R.id.action_geo);
@@ -86,8 +85,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
                 itemSearch.collapseActionView();
             }
             actv.setText("");
-            mPresenter.clearCity();
-            mPresenter.loadTodayForecast();
+            mPresenter.onGeoSelected();
             return false;
         });
         return true;
