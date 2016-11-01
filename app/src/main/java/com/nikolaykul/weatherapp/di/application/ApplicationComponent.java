@@ -12,7 +12,10 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {NetworkModule.class, GooglePlacesApiModule.class, ApplicationModule.class})
+@Component(modules = {ApplicationModule.class,
+        NetworkModule.class,
+        PlacesApiModule.class,
+        WeatherApiModule.class})
 public interface ApplicationComponent {
 
     @AppContext Context context();

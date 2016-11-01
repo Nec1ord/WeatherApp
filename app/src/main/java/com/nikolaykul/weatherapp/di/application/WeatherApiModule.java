@@ -2,12 +2,11 @@ package com.nikolaykul.weatherapp.di.application;
 
 import android.content.Context;
 
-import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
+import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.util.Const;
 
 import java.io.File;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -22,26 +21,23 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 @Module
-class GooglePlacesApiModule {
-    private static final String API_NAME = "googleApi";
+class WeatherApiModule {
 
     @Provides
-    @Singleton
-    @Named(API_NAME)
+    @WeatherApiQualifier
     Cache provideCache(@AppContext Context context) {
-        final File cacheDir = new File(context.getCacheDir(), "cacheGoogleApi");
+        final File cacheDir = new File(context.getCacheDir(), "cache");
         return new Cache(cacheDir, 10 * 1024 * 1024);
     }
 
     @Provides
-    @Singleton
-    @Named(API_NAME)
-    OkHttpClient provideClient(@Named(API_NAME) Cache cache) {
+    @WeatherApiQualifier
+    OkHttpClient provideClient(@WeatherApiQualifier Cache cache) {
         final Interceptor authInterceptor = chain -> {
             final Request origin = chain.request();
             final HttpUrl url = origin.url().newBuilder()
-                    .addQueryParameter(Const.API_PLACES_KEY_NAME, Const.API_PLACES_KEY_VALUE)
-                    .addQueryParameter(Const.API_PLACES_TYPES_NAME, Const.API_PLACES_TYPES_VALUE)
+                    .addQueryParameter(Const.API_WEATHER_KEY_NAME, Const.API_WEATHER_KEY_VALUE)
+                    .addQueryParameter(Const.API_WEATHER_METRIC_NAME, Const.API_WEATHER_METRIC_VALUE)
                     .build();
             final Request request = origin.newBuilder()
                     .url(url)
@@ -55,13 +51,12 @@ class GooglePlacesApiModule {
     }
 
     @Provides
-    @Singleton
-    @Named(API_NAME)
-    Retrofit provideRetrofit(@Named(API_NAME) OkHttpClient client,
+    @WeatherApiQualifier
+    Retrofit provideRetrofit(@WeatherApiQualifier OkHttpClient client,
                              Converter.Factory converterFactory,
                              CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
-                .baseUrl(Const.API_PLACES_HOST)
+                .baseUrl(Const.API_WEATHER_HOST)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(client)
@@ -70,8 +65,9 @@ class GooglePlacesApiModule {
 
     @Provides
     @Singleton
-    GooglePlacesApi provideApi(@Named(API_NAME) Retrofit retrofit) {
-        return retrofit.create(GooglePlacesApi.class);
+    WeatherApi provideApi(@WeatherApiQualifier Retrofit retrofit) {
+        return retrofit.create(WeatherApi.class);
     }
+
 
 }
