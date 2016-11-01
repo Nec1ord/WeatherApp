@@ -8,7 +8,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
@@ -79,17 +78,14 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
         addSubscription(sub);
     }
 
-    @Override public void onLocationChanged(Location location) {
-        // remove updates
-        if (Build.VERSION.SDK_INT >= 23 &&
-                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            getMvpView().hideLoading();
-            getMvpView().askLocationPermissions();
+    @Override
+    @SuppressWarnings({"ResourceType"})
+    public void onLocationChanged(Location location) {
+        // remove updates & try again
+        if (!hasLocationPermissions()) {
             return;
         }
         mLocationManager.removeUpdates(this);
-        // try again
         loadTodayForecast();
     }
 
@@ -103,19 +99,16 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
         getMvpView().askToEnableGps();
     }
 
+    @SuppressWarnings({"ResourceType"})
     private Observable<ForecastRequest> fetchForecastFromLocation() {
         // check permissions
-        if (Build.VERSION.SDK_INT >= 23 &&
-                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            getMvpView().hideLoading();
-            getMvpView().askLocationPermissions();
+        if (!hasLocationPermissions()) {
             return null;
         }
         // check if gps enabled
         final String gpsProvider = LocationManager.GPS_PROVIDER;
         if (!mLocationManager.isProviderEnabled(gpsProvider)) {
-            getMvpView().hideLoading();
+//            getMvpView().hideLoading();
             getMvpView().askToEnableGps();
             return null;
         }
@@ -130,6 +123,17 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
         return mApi.fetchForecast(location.getLatitude(), location.getLongitude(), FORECAST_COUNT)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(request -> getMvpView().showCity(request.city.name));
+    }
+
+    private boolean hasLocationPermissions() {
+        if (Build.VERSION.SDK_INT >= 23 &&
+                getMvpView().checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            getMvpView().hideLoading();
+            getMvpView().askLocationPermissions();
+            return false;
+        }
+        return true;
     }
 
     private Observable<ForecastRequest> fetchForecastFromCity() {

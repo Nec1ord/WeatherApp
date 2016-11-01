@@ -101,6 +101,10 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         return this;
     }
 
+    @Override public int checkPermission(@NonNull String permission) {
+        return ActivityCompat.checkSelfPermission(this, permission);
+    }
+
     @Override public void showLoading() {
         mBinding.swipeRefreshLayout.setRefreshing(true);
     }
