@@ -3,6 +3,7 @@ package com.nikolaykul.weatherapp.di.application;
 import android.content.Context;
 
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
+import com.nikolaykul.weatherapp.util.Const;
 
 import java.io.File;
 
@@ -39,8 +40,8 @@ class GooglePlacesApiModule {
         final Interceptor authInterceptor = chain -> {
             final Request origin = chain.request();
             final HttpUrl url = origin.url().newBuilder()
-                    .addQueryParameter(GooglePlacesApi.KEY_NAME, GooglePlacesApi.KEY_VALUE)
-                    .addQueryParameter(GooglePlacesApi.TYPES_NAME, GooglePlacesApi.TYPES_VALUE)
+                    .addQueryParameter(Const.API_PLACES_KEY_NAME, Const.API_PLACES_KEY_VALUE)
+                    .addQueryParameter(Const.API_PLACES_TYPES_NAME, Const.API_PLACES_TYPES_VALUE)
                     .build();
             final Request request = origin.newBuilder()
                     .url(url)
@@ -60,7 +61,7 @@ class GooglePlacesApiModule {
                              Converter.Factory converterFactory,
                              CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
-                .baseUrl(GooglePlacesApi.HOST)
+                .baseUrl(Const.API_PLACES_HOST)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(client)

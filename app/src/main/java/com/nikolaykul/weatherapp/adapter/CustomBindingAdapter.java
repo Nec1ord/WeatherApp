@@ -6,15 +6,17 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nikolaykul.weatherapp.R;
-import com.nikolaykul.weatherapp.data.remote.WeatherApi;
+import com.nikolaykul.weatherapp.util.Const;
 import com.nikolaykul.weatherapp.util.StringUtil;
+
+import java.util.Locale;
 
 public class CustomBindingAdapter {
 
     @BindingAdapter("iconUrl")
     public static void uploadIcon(final ImageView imageView, final String icon) {
         if (StringUtil.isNullOrEmpty(icon)) return;
-        final String url = WeatherApi.ICON_URL + icon + ".png";
+        final String url = String.format(Locale.getDefault(), Const.API_WEATHER_ICON_URL, icon);
         Glide.with(imageView.getContext())
                 .load(url)
                 .placeholder(R.drawable.forecast_placeholder)

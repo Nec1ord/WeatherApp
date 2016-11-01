@@ -3,6 +3,7 @@ package com.nikolaykul.weatherapp.di.application;
 import android.content.Context;
 
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
+import com.nikolaykul.weatherapp.util.Const;
 
 import java.io.File;
 
@@ -37,8 +38,8 @@ class NetworkModule {
         final Interceptor authInterceptor = chain -> {
             final Request origin = chain.request();
             final HttpUrl url = origin.url().newBuilder()
-                    .addQueryParameter(WeatherApi.KEY_NAME, WeatherApi.KEY_VALUE)
-                    .addQueryParameter(WeatherApi.METRIC_NAME, WeatherApi.METRIC_VALUE)
+                    .addQueryParameter(Const.API_WEATHER_KEY_NAME, Const.API_WEATHER_KEY_VALUE)
+                    .addQueryParameter(Const.API_WEATHER_METRIC_NAME, Const.API_WEATHER_METRIC_VALUE)
                     .build();
             final Request request = origin.newBuilder()
                     .url(url)
@@ -69,7 +70,7 @@ class NetworkModule {
                              Converter.Factory converterFactory,
                              CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
-                .baseUrl(WeatherApi.HOST)
+                .baseUrl(Const.API_WEATHER_HOST)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(client)
