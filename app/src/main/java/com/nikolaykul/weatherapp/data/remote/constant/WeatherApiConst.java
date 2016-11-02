@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.data.remote;
+package com.nikolaykul.weatherapp.data.remote.constant;
 
 public final class WeatherApiConst {
     public static final String HOST = "http://api.openweathermap.org/data/2.5/forecast/";

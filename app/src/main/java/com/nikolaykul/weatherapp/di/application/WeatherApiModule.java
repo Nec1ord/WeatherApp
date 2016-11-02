@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
-import com.nikolaykul.weatherapp.data.remote.WeatherApiConst;
+import com.nikolaykul.weatherapp.data.remote.constant.WeatherApiConst;
 import com.nikolaykul.weatherapp.data.remote.interceptor.QueryInterceptior;
 import com.nikolaykul.weatherapp.data.remote.interceptor.WeatherErrorInterceptor;
 import com.nikolaykul.weatherapp.data.remote.mapper.WeatherMapper;

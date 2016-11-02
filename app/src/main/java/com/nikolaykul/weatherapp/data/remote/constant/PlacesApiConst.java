@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.data.remote;
+package com.nikolaykul.weatherapp.data.remote.constant;
 
 public final class PlacesApiConst {
     public static final String HOST = "https://maps.googleapis.com/";

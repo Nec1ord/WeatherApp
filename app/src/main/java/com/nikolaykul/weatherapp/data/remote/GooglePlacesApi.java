@@ -1,6 +1,7 @@
 package com.nikolaykul.weatherapp.data.remote;
 
 import com.nikolaykul.weatherapp.data.model.PlacesModel;
+import com.nikolaykul.weatherapp.data.remote.constant.PlacesApiConst;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

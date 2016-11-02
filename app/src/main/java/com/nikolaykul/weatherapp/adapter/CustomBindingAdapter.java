@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nikolaykul.weatherapp.R;
-import com.nikolaykul.weatherapp.data.remote.WeatherApiConst;
+import com.nikolaykul.weatherapp.data.remote.constant.WeatherApiConst;
 import com.nikolaykul.weatherapp.util.StringUtil;
 
 import java.util.Locale;
