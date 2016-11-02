@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.util;
+package com.nikolaykul.weatherapp.data.remote.interceptor;
 
 import com.jayway.jsonpath.JsonPath;
 

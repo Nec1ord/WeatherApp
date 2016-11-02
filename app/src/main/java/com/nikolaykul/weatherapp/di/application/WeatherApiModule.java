@@ -8,8 +8,8 @@ import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.data.remote.WeatherApiConst;
 import com.nikolaykul.weatherapp.data.remote.adapter.WeatherMapper;
-import com.nikolaykul.weatherapp.util.QueryInterceptior;
-import com.nikolaykul.weatherapp.util.WeatherErrorInterceptor;
+import com.nikolaykul.weatherapp.data.remote.interceptor.QueryInterceptior;
+import com.nikolaykul.weatherapp.data.remote.interceptor.WeatherErrorInterceptor;
 
 import java.io.File;
 import java.util.HashMap;
