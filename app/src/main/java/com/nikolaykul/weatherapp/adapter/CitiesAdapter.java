@@ -8,7 +8,7 @@ import android.widget.Filter;
 
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
-import com.nikolaykul.weatherapp.di.activity.PerActivity;
+import com.nikolaykul.weatherapp.di.scope.PerActivity;
 import com.nikolaykul.weatherapp.util.NetworkManager;
 
 import java.util.Collections;

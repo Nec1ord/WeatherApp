@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.di.activity;
+package com.nikolaykul.weatherapp.di.scope;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

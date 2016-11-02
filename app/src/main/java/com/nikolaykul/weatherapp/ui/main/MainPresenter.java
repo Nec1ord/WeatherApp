@@ -11,7 +11,7 @@ import android.os.Bundle;
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
-import com.nikolaykul.weatherapp.di.activity.PerActivity;
+import com.nikolaykul.weatherapp.di.scope.PerActivity;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
 import com.nikolaykul.weatherapp.util.NetworkManager;

@@ -3,6 +3,8 @@ package com.nikolaykul.weatherapp.di.activity;
 import android.app.Activity;
 import android.content.Context;
 
+import com.nikolaykul.weatherapp.di.scope.PerActivity;
+
 import dagger.Module;
 import dagger.Provides;
 
