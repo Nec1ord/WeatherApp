@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.di.application;
+package com.nikolaykul.weatherapp.di.qualifier;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,5 +7,5 @@ import javax.inject.Qualifier;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@interface PlacesApiQualifier {
+public @interface PlacesApiQualifier {
 }

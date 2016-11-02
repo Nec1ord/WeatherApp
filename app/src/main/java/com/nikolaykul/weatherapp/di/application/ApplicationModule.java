@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.location.LocationManager;
 
+import com.nikolaykul.weatherapp.di.qualifier.AppContext;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
