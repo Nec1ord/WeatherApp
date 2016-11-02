@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jayway.jsonpath.JsonPath;
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.data.remote.WeatherApiConst;
@@ -20,6 +21,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -38,7 +40,8 @@ class WeatherApiModule {
     @Provides
     @WeatherApiQualifier
     OkHttpClient provideClient(@WeatherApiQualifier Cache cache) {
-        final Interceptor authInterceptor = chain -> {
+        // TODO: inject interceptors
+        final Interceptor queryInterceptor = chain -> {
             final Request origin = chain.request();
             final HttpUrl url = origin.url().newBuilder()
                     .addQueryParameter(WeatherApiConst.KEY_NAME, WeatherApiConst.KEY_VALUE)
@@ -49,9 +52,19 @@ class WeatherApiModule {
                     .build();
             return chain.proceed(request);
         };
+        final Interceptor errorNotFoundInterceptor = chain -> {
+            final Response response = chain.proceed(chain.request());
+            final String body = response.body().source().readUtf8();
+            final int statusCode = JsonPath.parse(body).read("$.cod", Integer.class);
+            if (statusCode >= 400) {
+                throw new RuntimeException(body);
+            }
+            return response;
+        };
         return new OkHttpClient.Builder()
                 .cache(cache)
-                .addInterceptor(authInterceptor)
+                .addInterceptor(queryInterceptor)
+                .addInterceptor(errorNotFoundInterceptor)
                 .build();
     }
 
