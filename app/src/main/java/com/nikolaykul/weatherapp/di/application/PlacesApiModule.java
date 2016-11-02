@@ -49,9 +49,9 @@ class PlacesApiModule {
 
     @Provides
     @PlacesApiQualifier
-    Gson provideGson() {
+    Gson provideGson(PlacesMapper placesMapper) {
         return new GsonBuilder()
-                .registerTypeAdapter(PlacesModel.class, new PlacesMapper())
+                .registerTypeAdapter(PlacesModel.class, placesMapper)
                 .create();
     }
 

@@ -51,9 +51,9 @@ class WeatherApiModule {
 
     @Provides
     @WeatherApiQualifier
-    Gson provideGson() {
+    Gson provideGson(WeatherMapper weatherMapper) {
         return new GsonBuilder()
-                .registerTypeAdapter(WeatherModel.class, new WeatherMapper())
+                .registerTypeAdapter(WeatherModel.class, weatherMapper)
                 .create();
     }
 

@@ -7,23 +7,22 @@ import com.google.gson.JsonParseException;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.TypeRef;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
-import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class WeatherMapper implements JsonDeserializer<WeatherModel> {
     private final Configuration mConfiguration;
     private final TypeRef<List<Forecast>> mListForecastType;
 
-    public WeatherMapper() {
-        mConfiguration = Configuration.builder()
-                .mappingProvider(new GsonMappingProvider())
-                .jsonProvider(new GsonJsonProvider())
-                .build();
+    @Inject public WeatherMapper(Configuration configuration) {
+        mConfiguration = configuration;
         mListForecastType = new TypeRef<List<Forecast>>() {
         };
     }
