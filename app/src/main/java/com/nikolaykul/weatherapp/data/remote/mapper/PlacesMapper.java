@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.data.remote.adapter;
+package com.nikolaykul.weatherapp.data.remote.mapper;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
