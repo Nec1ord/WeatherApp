@@ -8,18 +8,17 @@ import com.nikolaykul.weatherapp.data.model.PlacesModel;
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
 import com.nikolaykul.weatherapp.data.remote.PlacesApiConst;
 import com.nikolaykul.weatherapp.data.remote.adapter.PlacesMapper;
+import com.nikolaykul.weatherapp.util.QueryInterceptior;
 
 import java.io.File;
+import java.util.HashMap;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -38,20 +37,13 @@ class PlacesApiModule {
     @Provides
     @PlacesApiQualifier
     OkHttpClient provideClient(@PlacesApiQualifier Cache cache) {
-        final Interceptor authInterceptor = chain -> {
-            final Request origin = chain.request();
-            final HttpUrl url = origin.url().newBuilder()
-                    .addQueryParameter(PlacesApiConst.KEY_NAME, PlacesApiConst.KEY_VALUE)
-                    .addQueryParameter(PlacesApiConst.TYPES_NAME, PlacesApiConst.TYPES_VALUE)
-                    .build();
-            final Request request = origin.newBuilder()
-                    .url(url)
-                    .build();
-            return chain.proceed(request);
-        };
+        final HashMap<String, String> queryMap = new HashMap<>(2);
+        queryMap.put(PlacesApiConst.KEY_NAME, PlacesApiConst.KEY_VALUE);
+        queryMap.put(PlacesApiConst.TYPES_NAME, PlacesApiConst.TYPES_VALUE);
+
         return new OkHttpClient.Builder()
                 .cache(cache)
-                .addInterceptor(authInterceptor)
+                .addInterceptor(new QueryInterceptior(queryMap))
                 .build();
     }
 
