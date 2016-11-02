@@ -3,6 +3,9 @@ package com.nikolaykul.weatherapp.di.application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.spi.json.GsonJsonProvider;
+import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.nikolaykul.weatherapp.util.NetworkManager;
 
 import javax.inject.Singleton;
@@ -14,6 +17,15 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
 @Module
 class NetworkModule {
+
+    @Provides
+    @Singleton
+    Configuration provideGsonConfiguration() {
+        return Configuration.builder()
+                .mappingProvider(new GsonMappingProvider())
+                .jsonProvider(new GsonJsonProvider())
+                .build();
+    }
 
     @Provides
     @Singleton
