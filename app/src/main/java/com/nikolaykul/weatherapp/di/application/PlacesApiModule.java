@@ -2,8 +2,12 @@ package com.nikolaykul.weatherapp.di.application;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.nikolaykul.weatherapp.data.model.PlacesModel;
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
 import com.nikolaykul.weatherapp.data.remote.PlacesApiConst;
+import com.nikolaykul.weatherapp.data.remote.adapter.PlacesMapper;
 
 import java.io.File;
 
@@ -19,6 +23,7 @@ import okhttp3.Request;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 class PlacesApiModule {
@@ -52,8 +57,22 @@ class PlacesApiModule {
 
     @Provides
     @PlacesApiQualifier
+    Gson provideGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(PlacesModel.class, new PlacesMapper())
+                .create();
+    }
+
+    @Provides
+    @PlacesApiQualifier
+    Converter.Factory provideConverterFactory(@PlacesApiQualifier Gson gson) {
+        return GsonConverterFactory.create(gson);
+    }
+
+    @Provides
+    @PlacesApiQualifier
     Retrofit provideRetrofit(@PlacesApiQualifier OkHttpClient client,
-                             Converter.Factory converterFactory,
+                             @PlacesApiQualifier Converter.Factory converterFactory,
                              CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
                 .baseUrl(PlacesApiConst.HOST)

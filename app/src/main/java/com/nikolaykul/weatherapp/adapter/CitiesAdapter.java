@@ -11,13 +11,11 @@ import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
 import com.nikolaykul.weatherapp.di.activity.PerActivity;
 import com.nikolaykul.weatherapp.util.NetworkManager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -69,15 +67,11 @@ public class CitiesAdapter extends ArrayAdapter<String> {
             return;
         }
         mApi.findSuggestions(input)
-                .map(googleRequest -> googleRequest.predictions)
-                .flatMap(Observable::from)
-                .map(prediction -> prediction.description)
-                .map(string -> string.split(",")[0])        // get only 1st name
-                .toList()
+                .map(googleRequest -> googleRequest.suggestions)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(suggestions -> {
-                    mCities = new ArrayList<>(suggestions);
+                    mCities = suggestions;
                     notifyDataSetChanged();
                 }, throwable -> Timber.e(throwable, "Couldn't fetch cities"));
     }
