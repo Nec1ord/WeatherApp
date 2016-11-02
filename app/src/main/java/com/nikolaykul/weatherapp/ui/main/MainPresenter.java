@@ -9,8 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.nikolaykul.weatherapp.R;
+import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
-import com.nikolaykul.weatherapp.data.remote.model.ForecastRequest;
 import com.nikolaykul.weatherapp.di.activity.PerActivity;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
@@ -58,7 +58,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
             return;
         }
 
-        final Observable<ForecastRequest> apiObservable = mCity != null
+        final Observable<WeatherModel> apiObservable = mCity != null
                 ? fetchForecastFromCity()
                 : fetchForecastFromLocation();
 
@@ -103,7 +103,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
     }
 
     @SuppressWarnings({"ResourceType"})
-    private Observable<ForecastRequest> fetchForecastFromLocation() {
+    private Observable<WeatherModel> fetchForecastFromLocation() {
         // check permissions
         if (!hasLocationPermissions()) {
             return null;
@@ -125,7 +125,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
         // create request observable
         return mApi.fetchForecast(location.getLatitude(), location.getLongitude(), FORECAST_COUNT)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(request -> getMvpView().showCity(request.city.name));
+                .doOnNext(request -> getMvpView().showCity(request.city));
     }
 
     private boolean hasLocationPermissions() {
@@ -139,7 +139,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
         return true;
     }
 
-    private Observable<ForecastRequest> fetchForecastFromCity() {
+    private Observable<WeatherModel> fetchForecastFromCity() {
         return mApi.fetchForecast(mCity, FORECAST_COUNT);
     }
 
