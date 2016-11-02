@@ -8,7 +8,7 @@ import rx.Observable;
 
 public interface GooglePlacesApi {
 
-    @GET("maps/api/place/autocomplete/json")
+    @GET(PlacesApiConst.Route.PLACE)
     Observable<GoogleRequest> findSuggestions(@Query("input") String city);
 
 }

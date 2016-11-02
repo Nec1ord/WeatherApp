@@ -6,8 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
+import com.nikolaykul.weatherapp.data.remote.WeatherApiConst;
 import com.nikolaykul.weatherapp.data.remote.adapter.WeatherMapper;
-import com.nikolaykul.weatherapp.util.Const;
 
 import java.io.File;
 
@@ -41,8 +41,8 @@ class WeatherApiModule {
         final Interceptor authInterceptor = chain -> {
             final Request origin = chain.request();
             final HttpUrl url = origin.url().newBuilder()
-                    .addQueryParameter(Const.API_WEATHER_KEY_NAME, Const.API_WEATHER_KEY_VALUE)
-                    .addQueryParameter(Const.API_WEATHER_METRIC_NAME, Const.API_WEATHER_METRIC_VALUE)
+                    .addQueryParameter(WeatherApiConst.KEY_NAME, WeatherApiConst.KEY_VALUE)
+                    .addQueryParameter(WeatherApiConst.METRIC_NAME, WeatherApiConst.METRIC_VALUE)
                     .build();
             final Request request = origin.newBuilder()
                     .url(url)
@@ -75,7 +75,7 @@ class WeatherApiModule {
                              @WeatherApiQualifier Converter.Factory converterFactory,
                              CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
-                .baseUrl(Const.API_WEATHER_HOST)
+                .baseUrl(WeatherApiConst.HOST)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(client)
