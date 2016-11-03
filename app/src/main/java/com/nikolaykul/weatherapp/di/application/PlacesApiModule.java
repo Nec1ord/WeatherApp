@@ -1,30 +1,37 @@
 package com.nikolaykul.weatherapp.di.application;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nikolaykul.weatherapp.data.model.PlacesModel;
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
 import com.nikolaykul.weatherapp.data.remote.constant.PlacesApiConst;
+import com.nikolaykul.weatherapp.data.remote.interceptor.NetworkErrorInterceptor;
 import com.nikolaykul.weatherapp.data.remote.interceptor.QueryInterceptor;
 import com.nikolaykul.weatherapp.data.remote.mapper.PlacesMapper;
 import com.nikolaykul.weatherapp.di.qualifier.AppContext;
 import com.nikolaykul.weatherapp.di.qualifier.PlacesApiQualifier;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
 @Module
 class PlacesApiModule {
@@ -38,15 +45,26 @@ class PlacesApiModule {
 
     @Provides
     @PlacesApiQualifier
-    OkHttpClient provideClient(@PlacesApiQualifier Cache cache) {
+    List<Interceptor> provideInterceptors(ConnectivityManager connectivityManager) {
         final HashMap<String, String> queryMap = new HashMap<>(2);
         queryMap.put(PlacesApiConst.KEY_NAME, PlacesApiConst.KEY_VALUE);
         queryMap.put(PlacesApiConst.TYPES_NAME, PlacesApiConst.TYPES_VALUE);
 
-        return new OkHttpClient.Builder()
-                .cache(cache)
-                .addInterceptor(new QueryInterceptor(queryMap))
-                .build();
+        final ArrayList<Interceptor> interceptors = new ArrayList<>();
+        interceptors.add(new QueryInterceptor(queryMap));
+        interceptors.add(new NetworkErrorInterceptor(connectivityManager));
+        return interceptors;
+    }
+
+    @Provides
+    @PlacesApiQualifier
+    OkHttpClient provideClient(@PlacesApiQualifier Cache cache,
+                               @PlacesApiQualifier List<Interceptor> interceptors) {
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder().cache(cache);
+        Observable.from(interceptors)
+                .subscribeOn(Schedulers.immediate())
+                .subscribe(builder::addInterceptor);
+        return builder.build();
     }
 
     @Provides
