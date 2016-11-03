@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -111,8 +110,8 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mBinding.swipeRefreshLayout.setRefreshing(false);
     }
 
-    @Override public void showError(@StringRes int strId) {
-        super.showError(strId);
+    @Override public void showError(String message) {
+        super.showError(message);
         hideLoading();
     }
 

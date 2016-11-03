@@ -134,8 +134,8 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
     }
 
     private void showError(Throwable t) {
-        Timber.e(t, "Some error occurred");
-        getMvpView().showError(R.string.error_default);
+        Timber.e(t, "MainPresenter");
+        getMvpView().showError(t);
     }
 
 }

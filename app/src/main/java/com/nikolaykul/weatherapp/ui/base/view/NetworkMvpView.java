@@ -8,4 +8,8 @@ public interface NetworkMvpView extends MvpView {
     void hideLoading();
 
     void showError(@StringRes int strId);
+
+    void showError(Throwable throwable);
+
+    void showError(String message);
 }
