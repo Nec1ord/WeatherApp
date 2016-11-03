@@ -13,4 +13,5 @@
     <string name="ok">OK</string>
     <string name="no">NO</string>
     <string name="search_hint">Search city…</string>
+    <string name="error_place_not_found">Place not found</string>
 </resources>

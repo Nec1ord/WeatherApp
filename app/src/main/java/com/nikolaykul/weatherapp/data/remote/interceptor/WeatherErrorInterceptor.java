@@ -3,6 +3,7 @@ package com.nikolaykul.weatherapp.data.remote.interceptor;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
+import com.nikolaykul.weatherapp.data.remote.error.PlaceNotFoundThrowable;
 
 import java.io.IOException;
 
@@ -26,7 +27,12 @@ public class WeatherErrorInterceptor implements Interceptor {
                 .parse(body)
                 .read("$.cod", Integer.class);
         if (null != statusCode && statusCode >= 400) {
-            throw new RuntimeException(body);
+            switch (statusCode) {
+                case 404:
+                    throw new PlaceNotFoundThrowable();
+                default:
+                    throw new RuntimeException(body);
+            }
         }
         return chain.proceed(chain.request());
     }
