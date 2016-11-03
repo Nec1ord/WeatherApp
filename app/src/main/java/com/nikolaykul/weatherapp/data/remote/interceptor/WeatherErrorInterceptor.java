@@ -28,7 +28,7 @@ public class WeatherErrorInterceptor implements Interceptor {
         if (null != statusCode && statusCode >= 400) {
             throw new RuntimeException(body);
         }
-        return response;
+        return chain.proceed(chain.request());
     }
 
 }
