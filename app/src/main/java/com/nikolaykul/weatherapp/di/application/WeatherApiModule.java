@@ -16,8 +16,8 @@ import com.nikolaykul.weatherapp.di.qualifier.AppContext;
 import com.nikolaykul.weatherapp.di.qualifier.WeatherApiQualifier;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -27,6 +27,7 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -51,10 +52,11 @@ class WeatherApiModule {
         queryMap.put(WeatherApiConst.KEY_NAME, WeatherApiConst.KEY_VALUE);
         queryMap.put(WeatherApiConst.METRIC_NAME, WeatherApiConst.METRIC_VALUE);
 
-        final ArrayList<Interceptor> interceptors = new ArrayList<>();
+        final LinkedList<Interceptor> interceptors = new LinkedList<>();
         interceptors.add(new QueryInterceptor(queryMap));
         interceptors.add(new WeatherErrorInterceptor());
         interceptors.add(new NetworkErrorInterceptor(connectivityManager));
+        interceptors.add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC));
         return interceptors;
     }
 
