@@ -1,6 +1,8 @@
 package com.nikolaykul.weatherapp.data.remote.interceptor;
 
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
 
 import java.io.IOException;
 
@@ -8,12 +10,22 @@ import okhttp3.Interceptor;
 import okhttp3.Response;
 
 public class WeatherErrorInterceptor implements Interceptor {
+    private final Configuration mConfiguration;
+
+    public WeatherErrorInterceptor() {
+        mConfiguration = Configuration
+                .defaultConfiguration()
+                .addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL);
+    }
 
     @Override public Response intercept(Chain chain) throws IOException {
         final Response response = chain.proceed(chain.request());
         final String body = response.body().source().readUtf8();
-        final int statusCode = JsonPath.parse(body).read("$.cod", Integer.class);
-        if (statusCode >= 400) {
+        final Integer statusCode = JsonPath
+                .using(mConfiguration)
+                .parse(body)
+                .read("$.cod", Integer.class);
+        if (null != statusCode && statusCode >= 400) {
             throw new RuntimeException(body);
         }
         return response;
