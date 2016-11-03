@@ -10,10 +10,10 @@ import okhttp3.Response;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class QueryInterceptior implements Interceptor {
+public class QueryInterceptor implements Interceptor {
     private final Map<String, String> mQueries;
 
-    public QueryInterceptior(Map<String, String> queries) {
+    public QueryInterceptor(Map<String, String> queries) {
         mQueries = queries;
     }
 

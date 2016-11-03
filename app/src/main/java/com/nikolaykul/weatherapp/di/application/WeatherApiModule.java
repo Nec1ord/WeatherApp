@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.data.remote.constant.WeatherApiConst;
-import com.nikolaykul.weatherapp.data.remote.interceptor.QueryInterceptior;
+import com.nikolaykul.weatherapp.data.remote.interceptor.QueryInterceptor;
 import com.nikolaykul.weatherapp.data.remote.interceptor.WeatherErrorInterceptor;
 import com.nikolaykul.weatherapp.data.remote.mapper.WeatherMapper;
 import com.nikolaykul.weatherapp.di.qualifier.AppContext;
@@ -46,7 +46,7 @@ class WeatherApiModule {
 
         return new OkHttpClient.Builder()
                 .cache(cache)
-                .addInterceptor(new QueryInterceptior(queryMap))
+                .addInterceptor(new QueryInterceptor(queryMap))
                 .addInterceptor(new WeatherErrorInterceptor())
                 .build();
     }
