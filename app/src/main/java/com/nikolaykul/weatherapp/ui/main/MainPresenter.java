@@ -14,7 +14,6 @@ import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.di.scope.PerActivity;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
-import com.nikolaykul.weatherapp.util.NetworkManager;
 
 import javax.inject.Inject;
 
@@ -29,15 +28,11 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
     private static final int FORECAST_COUNT = 7;
     private final WeatherApi mApi;
     private final LocationManager mLocationManager;
-    private final NetworkManager mNetworkManager;
     private String mCity;
 
-    @Inject public MainPresenter(WeatherApi api,
-                                 LocationManager locationManager,
-                                 NetworkManager networkManager) {
+    @Inject public MainPresenter(WeatherApi api, LocationManager locationManager) {
         mApi = api;
         mLocationManager = locationManager;
-        mNetworkManager = networkManager;
     }
 
     public void onCitySelected(String city) {
@@ -53,11 +48,6 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
     }
 
     public void loadTodayForecast() {
-        if (!mNetworkManager.isNetworkEnabled()) {
-            getMvpView().showError(R.string.error_network);
-            return;
-        }
-
         final Observable<WeatherModel> apiObservable = mCity != null
                 ? fetchForecastFromCity()
                 : fetchForecastFromLocation();

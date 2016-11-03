@@ -7,7 +7,6 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.nikolaykul.weatherapp.di.qualifier.AppContext;
-import com.nikolaykul.weatherapp.util.NetworkManager;
 
 import javax.inject.Singleton;
 
@@ -38,12 +37,6 @@ class NetworkModule {
     @Singleton
     ConnectivityManager provideConnectivityManager(@AppContext Context context) {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    }
-
-    @Provides
-    @Singleton
-    NetworkManager provideNetworkManager(ConnectivityManager cm) {
-        return new NetworkManager(cm);
     }
 
 }

@@ -9,7 +9,6 @@ import android.widget.Filter;
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
 import com.nikolaykul.weatherapp.di.scope.PerActivity;
-import com.nikolaykul.weatherapp.util.NetworkManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,14 +21,12 @@ import timber.log.Timber;
 
 @PerActivity
 public class CitiesAdapter extends ArrayAdapter<String> {
-    private final NetworkManager mNetworkManager;
     private final GooglePlacesApi mApi;
     private List<String> mCities;
 
     @Inject
-    public CitiesAdapter(Context context, GooglePlacesApi api, NetworkManager networkManager) {
+    public CitiesAdapter(Context context, GooglePlacesApi api) {
         super(context, R.layout.item_city);
-        mNetworkManager = networkManager;
         mCities = Collections.emptyList();
         mApi = api;
     }
@@ -62,10 +59,6 @@ public class CitiesAdapter extends ArrayAdapter<String> {
     }
 
     private void updateCities(String input) {
-        if (!mNetworkManager.isNetworkEnabled()) {
-            Timber.d("Network is not enabled");
-            return;
-        }
         mApi.findSuggestions(input)
                 .map(googleRequest -> googleRequest.suggestions)
                 .subscribeOn(Schedulers.io())
