@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 
 @Module
 public class ApplicationModule {
@@ -36,6 +37,12 @@ public class ApplicationModule {
     @Singleton
     RxPermissions provideRxPermissions(@AppContext Context context) {
         return RxPermissions.getInstance(context);
+    }
+
+    @Provides
+    @Singleton
+    ReactiveLocationProvider provideRxLocation(@AppContext Context context) {
+        return new ReactiveLocationProvider(context);
     }
 
 }

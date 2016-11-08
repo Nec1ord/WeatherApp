@@ -49,6 +49,7 @@ dependencies {
     final OKHTTP_VERSION = '3.4.1'
     final RETROFIT_2_VERSION = '2.1.0'
     final SUPPORT_VERSION = '24.2.1'
+    final GMS_VERSION = '9.6.1'
     def daggerCompiler = "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
 
     // Other
@@ -58,6 +59,10 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jayway.jsonpath:json-path:2.2.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
+    compile 'pl.charmas.android:android-reactive-location:0.10@aar'
+
+    // Google services
+    compile "com.google.android.gms:play-services-location:$GMS_VERSION"
 
     // Support
     compile "com.android.support:appcompat-v7:$SUPPORT_VERSION"

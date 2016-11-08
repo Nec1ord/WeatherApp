@@ -18,6 +18,7 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Inject;
 
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -30,14 +31,17 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
     private final WeatherApi mApi;
     private final LocationManager mLocationManager;
     private final RxPermissions mRxPermissions;
+    private final ReactiveLocationProvider mRxLocation;
     private String mCity;
 
     @Inject public MainPresenter(WeatherApi api,
                                  LocationManager locationManager,
-                                 RxPermissions rxPermissions) {
+                                 RxPermissions rxPermissions,
+                                 ReactiveLocationProvider rxLocation) {
         mApi = api;
         mLocationManager = locationManager;
         mRxPermissions = rxPermissions;
+        mRxLocation = rxLocation;
     }
 
     public void onCitySelected(String city) {

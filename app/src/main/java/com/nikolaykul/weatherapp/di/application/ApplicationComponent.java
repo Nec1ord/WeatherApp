@@ -11,6 +11,7 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 
 @Singleton
 @Component(modules = {ApplicationModule.class,
@@ -28,5 +29,7 @@ public interface ApplicationComponent {
     LocationManager locationManager();
 
     RxPermissions rxPermissions();
+
+    ReactiveLocationProvider rxLocation();
 
 }
