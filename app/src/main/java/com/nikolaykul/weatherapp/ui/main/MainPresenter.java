@@ -46,10 +46,6 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
                 ? fetchForecastFromCity()
                 : fetchForecastFromLocation();
 
-        if (null == apiObservable) {
-            return;
-        }
-
         final Subscription sub = apiObservable
                 .map(request -> request.forecasts)
                 .flatMap(Observable::from)

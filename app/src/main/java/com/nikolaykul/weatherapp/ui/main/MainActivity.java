@@ -97,11 +97,6 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mBinding.swipeRefreshLayout.setRefreshing(false);
     }
 
-    @Override public void showError(String message) {
-        super.showError(message);
-        hideLoading(); // TODO: still need that?
-    }
-
     @Override public void showCity(String city) {
         if (null == getSupportActionBar()) return;
         final String title = StringUtil.isNullOrEmpty(city)
