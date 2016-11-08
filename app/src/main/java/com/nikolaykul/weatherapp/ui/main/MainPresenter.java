@@ -1,16 +1,15 @@
 package com.nikolaykul.weatherapp.ui.main;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
-import android.os.Bundle;
 
-import com.nikolaykul.weatherapp.R;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
+import com.nikolaykul.weatherapp.data.remote.error.LocationProviderThrowable;
+import com.nikolaykul.weatherapp.data.remote.error.PermissionThrowable;
 import com.nikolaykul.weatherapp.di.scope.PerActivity;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
@@ -26,20 +25,17 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 @PerActivity
-public class MainPresenter extends RxPresenter<MainMvpView> implements LocationListener {
+public class MainPresenter extends RxPresenter<MainMvpView> {
     private static final int FORECAST_COUNT = 7;
     private final WeatherApi mApi;
-    private final LocationManager mLocationManager;
     private final RxPermissions mRxPermissions;
     private final ReactiveLocationProvider mRxLocation;
     private String mCity;
 
     @Inject public MainPresenter(WeatherApi api,
-                                 LocationManager locationManager,
                                  RxPermissions rxPermissions,
                                  ReactiveLocationProvider rxLocation) {
         mApi = api;
-        mLocationManager = locationManager;
         mRxPermissions = rxPermissions;
         mRxLocation = rxLocation;
     }
@@ -80,70 +76,60 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
         addSubscription(sub);
     }
 
-    @Override
-    @SuppressWarnings({"ResourceType"})
-    public void onLocationChanged(Location location) {
-        // remove updates & try again
-        if (!hasLocationPermissions()) {
-            return;
-        }
-        mLocationManager.removeUpdates(this);
-        loadTodayForecast();
-    }
-
-    @Override public void onStatusChanged(String s, int i, Bundle bundle) {
-    }
-
-    @Override public void onProviderEnabled(String s) {
-    }
-
-    @Override public void onProviderDisabled(String s) {
-        getMvpView().askToEnableGps();
-    }
-
-    @SuppressWarnings({"ResourceType"})
-    private Observable<WeatherModel> fetchForecastFromLocation() {
-        // check permissions
-        if (!hasLocationPermissions()) {
-            return null;
-        }
-        // check if gps enabled
-        final String gpsProvider = LocationManager.GPS_PROVIDER;
-        if (!mLocationManager.isProviderEnabled(gpsProvider)) {
-            getMvpView().hideLoading();
-            getMvpView().askToEnableGps();
-            return null;
-        }
-        // check location
-        final Location location = mLocationManager.getLastKnownLocation(gpsProvider);
-        if (null == location) {
-            getMvpView().showError(R.string.error_location);
-            mLocationManager.requestLocationUpdates(gpsProvider, 0, 0, this);
-            return null;
-        }
-        // create request observable
-        return mApi.fetchForecast(location.getLatitude(), location.getLongitude(), FORECAST_COUNT)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(request -> getMvpView().showCity(request.city));
-    }
-
-    private boolean hasLocationPermissions() {
-        if (Build.VERSION.SDK_INT >= 23 &&
-                getMvpView().checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            getMvpView().hideLoading();
-            getMvpView().askLocationPermissions();
-            return false;
-        }
-        return true;
-    }
-
     private Observable<WeatherModel> fetchForecastFromCity() {
         return mApi.fetchForecast(mCity, FORECAST_COUNT);
     }
 
+    private Observable<WeatherModel> fetchForecastFromLocation() {
+        return getLocation()
+                .observeOn(Schedulers.io())
+                .flatMap(location -> mApi.fetchForecast(
+                        location.getLatitude(),
+                        location.getLongitude(),
+                        FORECAST_COUNT))
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(request -> getMvpView().showCity(request.city));
+    }
+
+    @SuppressWarnings({"ResourceType"})
+    private Observable<Location> getLocation() {
+        final LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setMaxWaitTime(7 * 1000) // 7 sec
+                .setNumUpdates(1);
+        return checkLocationPermissions()
+                .flatMap(any -> checkLocationSettings(locationRequest))
+                .flatMap(any -> mRxLocation.getLastKnownLocation())
+                .switchIfEmpty(mRxLocation.getUpdatedLocation(locationRequest));
+    }
+
+    private Observable<Void> checkLocationPermissions() {
+        return mRxPermissions
+                .request(Manifest.permission.ACCESS_FINE_LOCATION)
+                .flatMap(granted -> granted
+                        ? Observable.just(null)
+                        : Observable.error(new PermissionThrowable()));
+    }
+
+    private Observable<Void> checkLocationSettings(LocationRequest locationRequest) {
+        final LocationSettingsRequest settingsRequest = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest)
+                .setAlwaysShow(true)
+                .build();
+        return mRxLocation.checkLocationSettings(settingsRequest)
+                .map(result -> result.getStatus().getStatusCode())
+                .map(statusCode -> statusCode == LocationSettingsStatusCodes.SUCCESS)
+                .flatMap(isProviderEnabled -> isProviderEnabled
+                        ? Observable.just(null)
+                        : Observable.error(new LocationProviderThrowable()));
+    }
+
     private void showError(Throwable t) {
         Timber.e(t, "MainPresenter");
+        if (t instanceof LocationProviderThrowable) {
+            getMvpView().askToEnableGps();
+            return;
+        }
         getMvpView().showError(t);
     }
 
