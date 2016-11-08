@@ -14,6 +14,7 @@ import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.di.scope.PerActivity;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Inject;
 
@@ -28,11 +29,15 @@ public class MainPresenter extends RxPresenter<MainMvpView> implements LocationL
     private static final int FORECAST_COUNT = 7;
     private final WeatherApi mApi;
     private final LocationManager mLocationManager;
+    private final RxPermissions mRxPermissions;
     private String mCity;
 
-    @Inject public MainPresenter(WeatherApi api, LocationManager locationManager) {
+    @Inject public MainPresenter(WeatherApi api,
+                                 LocationManager locationManager,
+                                 RxPermissions rxPermissions) {
         mApi = api;
         mLocationManager = locationManager;
+        mRxPermissions = rxPermissions;
     }
 
     public void onCitySelected(String city) {

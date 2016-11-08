@@ -6,6 +6,7 @@ import android.location.LocationManager;
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.di.qualifier.AppContext;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Singleton;
 
@@ -25,5 +26,7 @@ public interface ApplicationComponent {
     GooglePlacesApi googleApi();
 
     LocationManager locationManager();
+
+    RxPermissions rxPermissions();
 
 }
