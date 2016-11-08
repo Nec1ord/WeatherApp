@@ -1,7 +1,6 @@
 package com.nikolaykul.weatherapp.di.application;
 
 import android.content.Context;
-import android.location.LocationManager;
 
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
@@ -25,8 +24,6 @@ public interface ApplicationComponent {
     WeatherApi api();
 
     GooglePlacesApi googleApi();
-
-    LocationManager locationManager();
 
     RxPermissions rxPermissions();
 

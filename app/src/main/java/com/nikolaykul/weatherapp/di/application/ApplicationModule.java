@@ -2,7 +2,6 @@ package com.nikolaykul.weatherapp.di.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.location.LocationManager;
 
 import com.nikolaykul.weatherapp.di.qualifier.AppContext;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -25,12 +24,6 @@ public class ApplicationModule {
     @AppContext
     Context provideApplicationContext() {
         return mApp;
-    }
-
-    @Provides
-    @Singleton
-    LocationManager provideLocationManager() {
-        return (LocationManager) mApp.getSystemService(Context.LOCATION_SERVICE);
     }
 
     @Provides
