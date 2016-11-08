@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.data.remote.error;
+package com.nikolaykul.weatherapp.error;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

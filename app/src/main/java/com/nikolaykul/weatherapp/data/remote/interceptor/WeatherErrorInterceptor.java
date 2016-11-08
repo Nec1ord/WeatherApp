@@ -3,7 +3,7 @@ package com.nikolaykul.weatherapp.data.remote.interceptor;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
-import com.nikolaykul.weatherapp.data.remote.error.PlaceNotFoundThrowable;
+import com.nikolaykul.weatherapp.error.PlaceNotFoundThrowable;
 
 import java.io.IOException;
 

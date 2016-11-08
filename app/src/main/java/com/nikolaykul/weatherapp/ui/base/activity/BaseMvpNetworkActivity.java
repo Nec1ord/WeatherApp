@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nikolaykul.weatherapp.R;
-import com.nikolaykul.weatherapp.data.remote.error.HasLocalizedMessage;
+import com.nikolaykul.weatherapp.error.HasLocalizedMessage;
 import com.nikolaykul.weatherapp.ui.base.presenter.Presenter;
 import com.nikolaykul.weatherapp.ui.base.view.MvpView;
 import com.nikolaykul.weatherapp.ui.base.view.NetworkMvpView;

@@ -6,8 +6,8 @@ import android.location.Location;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.nikolaykul.weatherapp.data.remote.error.LocationProviderThrowable;
-import com.nikolaykul.weatherapp.data.remote.error.PermissionThrowable;
+import com.nikolaykul.weatherapp.error.LocationProviderThrowable;
+import com.nikolaykul.weatherapp.error.PermissionThrowable;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;

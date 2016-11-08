@@ -3,7 +3,7 @@ package com.nikolaykul.weatherapp.data.remote.interceptor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.nikolaykul.weatherapp.data.remote.error.NoInternetConnectionThrowable;
+import com.nikolaykul.weatherapp.error.NoInternetConnectionThrowable;
 
 import java.io.IOException;
 
