@@ -61,7 +61,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
                 .doAfterTerminate(getMvpView()::hideLoading)
                 .subscribe(
                         getMvpView()::showTodayForecast,
-                        this::showError);
+                        this::handleError);
         addSubscription(sub);
     }
 
@@ -79,10 +79,10 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
                 .doOnNext(request -> getMvpView().showCity(request.city));
     }
 
-    private void showError(Throwable t) {
+    private void handleError(Throwable t) {
         Timber.e(t, "MainPresenter");
         if (t instanceof LocationProviderThrowable) {
-            getMvpView().askToEnableGps(); // status.startResolutionForResult(..)
+            getMvpView().askToEnableGps();
             return;
         }
         getMvpView().showError(t);
