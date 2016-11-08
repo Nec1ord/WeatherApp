@@ -80,12 +80,12 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
     }
 
     private void handleError(Throwable t) {
-        Timber.e(t, "MainPresenter");
         if (t instanceof LocationProviderThrowable) {
-            getMvpView().askToEnableGps();
+            getMvpView().askToEnableGps(((LocationProviderThrowable) t).getStatus());
             return;
         }
         getMvpView().showError(t);
+        Timber.e(t, "MainPresenter");
     }
 
 }

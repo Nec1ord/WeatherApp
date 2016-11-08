@@ -1,13 +1,9 @@
 package com.nikolaykul.weatherapp.ui.main;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.IntentSender;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.common.api.Status;
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.adapter.CitiesAdapter;
 import com.nikolaykul.weatherapp.adapter.ForecastRVAdapter;
@@ -32,32 +28,27 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresenter>
         implements MainMvpView {
-    private static final int PERMISSION_LOCATION_CODE = 1;
+    private static final int REQUEST_CODE_LOCATION = 42;
     @Inject protected CitiesAdapter mCitiesAdapter;
     private ActivityMainBinding mBinding;
     private ForecastRVAdapter mAdapter;
-    private MaterialDialog mGpsDialog;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mAdapter = new ForecastRVAdapter(Collections.emptyList());
-        mGpsDialog = createGpsDialog();
         initRecyclerView(mBinding.recyclerView);
         initToolbar(mBinding.includeToolbar.toolbar);
         mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_LOCATION_CODE &&
-                grantResults.length > 0 &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE_LOCATION == requestCode && RESULT_OK == resultCode) {
             mPresenter.loadTodayForecast();
         }
     }
@@ -98,10 +89,6 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         return this;
     }
 
-    @Override public int checkPermission(@NonNull String permission) {
-        return ActivityCompat.checkSelfPermission(this, permission);
-    }
-
     @Override public void showLoading() {
         mBinding.swipeRefreshLayout.setRefreshing(true);
     }
@@ -112,7 +99,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
 
     @Override public void showError(String message) {
         super.showError(message);
-        hideLoading();
+        hideLoading(); // TODO: still need that?
     }
 
     @Override public void showCity(String city) {
@@ -129,14 +116,12 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mBinding.setHasItems(!forecasts.isEmpty());
     }
 
-    @Override public void askLocationPermissions() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                PERMISSION_LOCATION_CODE);
-    }
-
-    @Override public void askToEnableGps() {
-        mGpsDialog.show();
+    @Override public void askToEnableGps(Status status) {
+        try {
+            status.startResolutionForResult(this, REQUEST_CODE_LOCATION);
+        } catch (IntentSender.SendIntentException e) {
+            Timber.e(e, "Ask to enable gps error");
+        }
     }
 
     private void initRecyclerView(RecyclerView recyclerView) {
@@ -154,17 +139,6 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         if (actionBar != null) {
             actionBar.setTitle(R.string.title_main);
         }
-    }
-
-    private MaterialDialog createGpsDialog() {
-        return new MaterialDialog.Builder(this)
-                .title(R.string.dialog_gps_title)
-                .content(R.string.dialog_gps_content)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.no)
-                .onPositive((dialog, which) ->
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
-                .build();
     }
 
 }

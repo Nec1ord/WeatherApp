@@ -5,6 +5,7 @@ import android.location.Location;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.nikolaykul.weatherapp.error.LocationProviderThrowable;
 import com.nikolaykul.weatherapp.error.PermissionThrowable;
@@ -53,11 +54,10 @@ public class RxLocationManager {
                 .setAlwaysShow(true)
                 .build();
         return mRxLocation.checkLocationSettings(settingsRequest)
-                .map(result -> result.getStatus().getStatusCode())
-                .map(statusCode -> statusCode == LocationSettingsStatusCodes.SUCCESS)
-                .flatMap(isProviderEnabled -> isProviderEnabled
+                .map(LocationSettingsResult::getStatus)
+                .flatMap(status -> LocationSettingsStatusCodes.SUCCESS == status.getStatusCode()
                         ? Observable.just(null)
-                        : Observable.error(new LocationProviderThrowable()));
+                        : Observable.error(new LocationProviderThrowable(status)));
     }
 
 }
