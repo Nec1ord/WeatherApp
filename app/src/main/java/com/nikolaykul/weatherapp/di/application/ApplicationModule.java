@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.nikolaykul.weatherapp.di.qualifier.AppContext;
+import com.nikolaykul.weatherapp.util.RxLocationManager;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Singleton;
@@ -36,6 +37,13 @@ public class ApplicationModule {
     @Singleton
     ReactiveLocationProvider provideRxLocation(@AppContext Context context) {
         return new ReactiveLocationProvider(context);
+    }
+
+    @Provides
+    @Singleton
+    RxLocationManager provideRxLocationManager(RxPermissions rxPermissions,
+                                               ReactiveLocationProvider rxLocation) {
+        return new RxLocationManager(rxPermissions, rxLocation);
     }
 
 }

@@ -5,12 +5,11 @@ import android.content.Context;
 import com.nikolaykul.weatherapp.data.remote.GooglePlacesApi;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.di.qualifier.AppContext;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.nikolaykul.weatherapp.util.RxLocationManager;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 
 @Singleton
 @Component(modules = {ApplicationModule.class,
@@ -25,8 +24,6 @@ public interface ApplicationComponent {
 
     GooglePlacesApi googleApi();
 
-    RxPermissions rxPermissions();
-
-    ReactiveLocationProvider rxLocation();
+    RxLocationManager rxLocationManager();
 
 }
