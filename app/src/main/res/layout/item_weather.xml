@@ -26,6 +26,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/selector_light_gray"
+            android:clickable="true"
             >
 
             <ImageView
