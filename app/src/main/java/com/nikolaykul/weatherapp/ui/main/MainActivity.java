@@ -40,7 +40,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mAdapter = new ForecastRVAdapter(Collections.emptyList());
+        mAdapter = new ForecastRVAdapter(Collections.emptyList(), mPresenter::onItemSelected);
         initRecyclerView(mBinding.recyclerView);
         initToolbar(mBinding.includeToolbar.toolbar);
         mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);

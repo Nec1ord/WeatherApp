@@ -6,6 +6,7 @@ import com.nikolaykul.weatherapp.di.scope.PerActivity;
 import com.nikolaykul.weatherapp.error.LocationProviderThrowable;
 import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
+import com.nikolaykul.weatherapp.util.Navigator;
 import com.nikolaykul.weatherapp.util.RxLocationManager;
 
 import javax.inject.Inject;
@@ -20,12 +21,15 @@ import timber.log.Timber;
 public class MainPresenter extends RxPresenter<MainMvpView> {
     private static final int FORECAST_COUNT = 7;
     private final RxLocationManager mRxLocationManager;
+    private final Navigator mNavigator;
     private final WeatherApi mApi;
     private String mCity;
 
     @Inject public MainPresenter(RxLocationManager rxLocationManager,
+                                 Navigator navigator,
                                  WeatherApi api) {
         mRxLocationManager = rxLocationManager;
+        mNavigator = navigator;
         mApi = api;
     }
 
@@ -39,6 +43,10 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
         mCity = null;
         getMvpView().showCity(null);
         loadTodayForecast();
+    }
+
+    public void onItemSelected(ItemWeather item) {
+        mNavigator.navigateToSingleWeather();
     }
 
     public void loadTodayForecast() {

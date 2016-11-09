@@ -18,11 +18,14 @@ import java.util.List;
 
 public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.ForecastVH> {
     private static final int TYPE_HEADER = 0;
+    private final ForecastRVAdapter.OnItemClickListener mListener;
     private List<ItemWeather> mItems;
 
-    public ForecastRVAdapter(List<ItemWeather> items) {
+    public ForecastRVAdapter(List<ItemWeather> items,
+                             OnItemClickListener listener) {
         super();
         mItems = items;
+        mListener = listener;
     }
 
     @Override public int getItemCount() {
@@ -66,6 +69,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Fo
 
         public void setItem(ItemWeather item) {
             mBinding.setVariable(BR.item, item);
+            mBinding.getRoot().setOnClickListener(v -> mListener.onItemClicked(item));
         }
     }
 
@@ -79,6 +83,10 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Fo
         ForecastVHContent(View view) {
             super(view);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClicked(ItemWeather item);
     }
 
 }

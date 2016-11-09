@@ -28,6 +28,10 @@
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".ui.single_weather.SingleWeatherActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>
