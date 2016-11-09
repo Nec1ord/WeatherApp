@@ -1,10 +1,10 @@
 package com.nikolaykul.weatherapp.ui.main;
 
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
+import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.di.scope.PerActivity;
 import com.nikolaykul.weatherapp.error.LocationProviderThrowable;
-import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
 import com.nikolaykul.weatherapp.util.Navigator;
 import com.nikolaykul.weatherapp.util.RxLocationManager;
@@ -45,7 +45,7 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
         loadTodayForecast();
     }
 
-    public void onItemSelected(ItemWeather item) {
+    public void onItemSelected(Forecast item) {
         mNavigator.navigateToSingleWeather();
     }
 
@@ -56,9 +56,6 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
 
         final Subscription sub = apiObservable
                 .map(request -> request.forecasts)
-                .flatMap(Observable::from)
-                .map(ItemWeather::new)
-                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(getMvpView()::showLoading)

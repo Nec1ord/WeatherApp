@@ -15,11 +15,11 @@ import android.widget.AutoCompleteTextView;
 import com.google.android.gms.common.api.Status;
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.adapter.CitiesAdapter;
-import com.nikolaykul.weatherapp.adapter.ForecastRVAdapter;
+import com.nikolaykul.weatherapp.adapter.ForecastAdapter;
+import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
 import com.nikolaykul.weatherapp.item.ItemSpaceDecoration;
-import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.activity.BaseMvpNetworkActivity;
 import com.nikolaykul.weatherapp.util.StringUtil;
 
@@ -35,12 +35,12 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
     private static final int REQUEST_CODE_LOCATION = 42;
     @Inject protected CitiesAdapter mCitiesAdapter;
     private ActivityMainBinding mBinding;
-    private ForecastRVAdapter mAdapter;
+    private ForecastAdapter mAdapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mAdapter = new ForecastRVAdapter(Collections.emptyList(), mPresenter::onItemSelected);
+        mAdapter = new ForecastAdapter(Collections.emptyList(), mPresenter::onItemSelected);
         initRecyclerView(mBinding.recyclerView);
         initToolbar(mBinding.includeToolbar.toolbar);
         mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);
@@ -105,7 +105,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         getSupportActionBar().setTitle(title);
     }
 
-    @Override public void showTodayForecast(List<ItemWeather> forecasts) {
+    @Override public void showTodayForecast(List<Forecast> forecasts) {
         if (null == forecasts) return;
         mAdapter.replaceItems(forecasts);
         mBinding.setHasItems(!forecasts.isEmpty());
