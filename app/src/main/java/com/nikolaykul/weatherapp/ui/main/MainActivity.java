@@ -14,14 +14,14 @@ import android.widget.AutoCompleteTextView;
 
 import com.google.android.gms.common.api.Status;
 import com.nikolaykul.weatherapp.R;
-import com.nikolaykul.weatherapp.adapter.CitiesAdapter;
-import com.nikolaykul.weatherapp.adapter.ForecastAdapter;
 import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
-import com.nikolaykul.weatherapp.item.ItemSpaceDecoration;
 import com.nikolaykul.weatherapp.ui.base.activity.BaseMvpNetworkActivity;
 import com.nikolaykul.weatherapp.util.StringUtil;
+import com.nikolaykul.weatherapp.view.adapter.CitiesAdapter;
+import com.nikolaykul.weatherapp.view.adapter.ForecastAdapter;
+import com.nikolaykul.weatherapp.view.decoration.ItemSpaceDecoration;
 
 import java.util.Collections;
 import java.util.List;

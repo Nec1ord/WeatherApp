@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.adapter;
+package com.nikolaykul.weatherapp.view.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 import com.nikolaykul.weatherapp.databinding.ItemWeatherBinding;
-import com.nikolaykul.weatherapp.item.ItemWeather;
+import com.nikolaykul.weatherapp.view.item.ItemWeather;
+import com.nikolaykul.weatherapp.view.listener.OnForecastClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,10 +61,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
             mBinding.setItem(item);
             mBinding.getRoot().setOnClickListener(v -> mListener.onForecastClicked(forecast));
         }
-    }
-
-    public interface OnForecastClickListener {
-        void onForecastClicked(Forecast item);
     }
 
 }
