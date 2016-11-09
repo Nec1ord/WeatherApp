@@ -7,6 +7,15 @@
     <string name="title_main">Forecast</string>
     <string name="search_hint">Search city…</string>
 
+    <!-- Item weather -->
+    <string name="item_today_weather_title">Today is %s</string>
+    <string name="item_weather_forecast">Weather: %s</string>
+    <string name="item_weather_temp_max">Max: %s\u2103</string>
+    <string name="item_weather_temp_min">Min: %s\u2103</string>
+    <string name="item_weather_pressure">Pressure: %s</string>
+    <string name="item_weather_humidity">Humidity: %s</string>
+    <string name="item_weather_description">Weather description: %s</string>
+
     <!-- Error -->
     <string name="error_network">No internet connection</string>
     <string name="error_default">Server error</string>

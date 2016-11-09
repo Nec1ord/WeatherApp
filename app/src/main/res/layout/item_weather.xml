@@ -64,7 +64,7 @@
                 android:layout_toEndOf="@+id/iv_icon"
                 android:layout_toRightOf="@+id/iv_icon"
                 android:gravity="center"
-                android:text='@{String.format("Weather: %s", item.title)}'
+                android:text='@{String.format(@string/item_weather_forecast, item.title)}'
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_small"
                 tools:text="Weather: Rain"
@@ -84,7 +84,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text='@{String.format("Min: %s\u2103", item.tempMin)}'
+                    android:text='@{String.format(@string/item_weather_temp_min, item.tempMin)}'
                     tools:text="Min: 46.64\u2103"
                     />
 
@@ -93,7 +93,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text='@{String.format("Max: %s\u2103", item.tempMax)}'
+                    android:text='@{String.format(@string/item_weather_temp_max, item.tempMax)}'
                     tools:text="Max: 50.79\u2103"
                     />
 

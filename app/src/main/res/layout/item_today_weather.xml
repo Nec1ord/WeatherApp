@@ -50,7 +50,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/padding_medium"
                 android:paddingRight="@dimen/padding_medium"
-                android:text='@{"Today is " + DateUtil.getDayFromTimestamp(item.timestamp)}'
+                android:text='@{String.format(@string/item_today_weather_title, DateUtil.getDayFromTimestamp(item.timestamp))}'
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_medium"
                 tools:text="Today is Tuesday"
@@ -66,7 +66,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/padding_medium"
                 android:paddingRight="@dimen/padding_medium"
-                android:text='@{String.format("Weather: %s", item.title)}'
+                android:text='@{String.format(@string/item_weather_forecast, item.title)}'
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_small"
                 tools:text="Weather: Rain"
@@ -85,7 +85,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text='@{String.format("Min: %s\u2103", item.tempMin)}'
+                    android:text='@{String.format(@string/item_weather_temp_min, item.tempMin)}'
                     tools:text="Min: 46.64\u2103"
                     />
 
@@ -94,7 +94,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text='@{String.format("Max: %s\u2103", item.tempMax)}'
+                    android:text='@{String.format(@string/item_weather_temp_max, item.tempMax)}'
                     tools:text="Max: 50.79\u2103"
                     />
 
@@ -113,7 +113,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text='@{String.format("Pressure: %s", item.pressure)}'
+                    android:text='@{String.format(@string/item_weather_pressure, item.pressure)}'
                     tools:text="Pressure: 46"
                     />
 
@@ -122,7 +122,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text='@{String.format("Humidity: %s", item.humidity)}'
+                    android:text='@{String.format(@string/item_weather_humidity, item.humidity)}'
                     tools:text="Humidity: 50"
                     />
 
@@ -133,10 +133,11 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/layout_pressure"
                 android:gravity="center_vertical"
+                android:maxLines="1"
                 android:paddingLeft="@dimen/padding_medium"
                 android:paddingRight="@dimen/padding_medium"
                 android:singleLine="true"
-                android:text='@{String.format("Weather description: %s", item.description)}'
+                android:text='@{String.format(@string/item_weather_description, item.description)}'
                 tools:text="Weather description: some weather description..."
                 />
 
