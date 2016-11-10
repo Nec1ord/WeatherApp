@@ -36,6 +36,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
     @Inject protected CitiesAdapter mCitiesAdapter;
     private ActivityMainBinding mBinding;
     private ForecastAdapter mAdapter;
+    private boolean isLoading;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,22 +64,27 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         actv.setThreshold(1);
         actv.setAdapter(mCitiesAdapter);
         actv.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (itemSearch.isActionViewExpanded()) {
-                itemSearch.collapseActionView();
+            if (isLoading) {
+                return;
             }
             mPresenter.onCitySelected(mCitiesAdapter.getItem(i));
         });
-        // geo
-        final MenuItem itemGeo = menu.findItem(R.id.action_geo);
-        itemGeo.setOnMenuItemClickListener(menuItem -> {
-            if (itemSearch.isActionViewExpanded()) {
-                itemSearch.collapseActionView();
-            }
-            actv.setText("");
-            mPresenter.onGeoSelected();
-            return false;
-        });
         return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (isLoading) {
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.action_geo:
+                mPresenter.onGeoSelected();
+                return true;
+            case R.id.action_search:
+                item.expandActionView();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override protected void injectSelf(ActivityComponent activityComponent) {
@@ -91,10 +97,15 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
 
     @Override public void showLoading() {
         mBinding.swipeRefreshLayout.setRefreshing(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().collapseActionView();
+        }
+        isLoading = true;
     }
 
     @Override public void hideLoading() {
         mBinding.swipeRefreshLayout.setRefreshing(false);
+        isLoading = false;
     }
 
     @Override public void showCity(String city) {
