@@ -11,7 +11,7 @@
 
         <variable
             name="item"
-            type="com.nikolaykul.weatherapp.item.ItemWeather"
+            type="com.nikolaykul.weatherapp.view.item.ItemWeather"
             />
 
     </data>

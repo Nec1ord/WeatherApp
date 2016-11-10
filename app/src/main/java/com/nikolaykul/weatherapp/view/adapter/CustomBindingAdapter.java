@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.adapter;
+package com.nikolaykul.weatherapp.view.adapter;
 
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;

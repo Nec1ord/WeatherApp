@@ -14,14 +14,14 @@ import android.widget.AutoCompleteTextView;
 
 import com.google.android.gms.common.api.Status;
 import com.nikolaykul.weatherapp.R;
-import com.nikolaykul.weatherapp.adapter.CitiesAdapter;
-import com.nikolaykul.weatherapp.adapter.ForecastRVAdapter;
+import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 import com.nikolaykul.weatherapp.databinding.ActivityMainBinding;
 import com.nikolaykul.weatherapp.di.activity.ActivityComponent;
-import com.nikolaykul.weatherapp.item.ItemSpaceDecoration;
-import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.activity.BaseMvpNetworkActivity;
 import com.nikolaykul.weatherapp.util.StringUtil;
+import com.nikolaykul.weatherapp.view.adapter.CitiesAdapter;
+import com.nikolaykul.weatherapp.view.adapter.ForecastAdapter;
+import com.nikolaykul.weatherapp.view.decoration.ItemSpaceDecoration;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,12 +35,13 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
     private static final int REQUEST_CODE_LOCATION = 42;
     @Inject protected CitiesAdapter mCitiesAdapter;
     private ActivityMainBinding mBinding;
-    private ForecastRVAdapter mAdapter;
+    private ForecastAdapter mAdapter;
+    private boolean isLoading;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mAdapter = new ForecastRVAdapter(Collections.emptyList());
+        mAdapter = new ForecastAdapter(Collections.emptyList(), mPresenter::onItemSelected);
         initRecyclerView(mBinding.recyclerView);
         initToolbar(mBinding.includeToolbar.toolbar);
         mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);
@@ -63,22 +64,27 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         actv.setThreshold(1);
         actv.setAdapter(mCitiesAdapter);
         actv.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (itemSearch.isActionViewExpanded()) {
-                itemSearch.collapseActionView();
+            if (isLoading) {
+                return;
             }
             mPresenter.onCitySelected(mCitiesAdapter.getItem(i));
         });
-        // geo
-        final MenuItem itemGeo = menu.findItem(R.id.action_geo);
-        itemGeo.setOnMenuItemClickListener(menuItem -> {
-            if (itemSearch.isActionViewExpanded()) {
-                itemSearch.collapseActionView();
-            }
-            actv.setText("");
-            mPresenter.onGeoSelected();
-            return false;
-        });
         return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (isLoading) {
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.action_geo:
+                mPresenter.onGeoSelected();
+                return true;
+            case R.id.action_search:
+                item.expandActionView();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override protected void injectSelf(ActivityComponent activityComponent) {
@@ -91,10 +97,15 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
 
     @Override public void showLoading() {
         mBinding.swipeRefreshLayout.setRefreshing(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().collapseActionView();
+        }
+        isLoading = true;
     }
 
     @Override public void hideLoading() {
         mBinding.swipeRefreshLayout.setRefreshing(false);
+        isLoading = false;
     }
 
     @Override public void showCity(String city) {
@@ -105,7 +116,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         getSupportActionBar().setTitle(title);
     }
 
-    @Override public void showTodayForecast(List<ItemWeather> forecasts) {
+    @Override public void showTodayForecast(List<Forecast> forecasts) {
         if (null == forecasts) return;
         mAdapter.replaceItems(forecasts);
         mBinding.setHasItems(!forecasts.isEmpty());

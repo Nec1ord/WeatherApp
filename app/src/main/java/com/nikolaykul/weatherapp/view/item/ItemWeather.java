@@ -1,4 +1,4 @@
-package com.nikolaykul.weatherapp.item;
+package com.nikolaykul.weatherapp.view.item;
 
 import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 import com.nikolaykul.weatherapp.data.model.forecast.ForecastWeather;

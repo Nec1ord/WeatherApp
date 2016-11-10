@@ -1,11 +1,12 @@
 package com.nikolaykul.weatherapp.ui.main;
 
 import com.nikolaykul.weatherapp.data.model.WeatherModel;
+import com.nikolaykul.weatherapp.data.model.forecast.Forecast;
 import com.nikolaykul.weatherapp.data.remote.WeatherApi;
 import com.nikolaykul.weatherapp.di.scope.PerActivity;
 import com.nikolaykul.weatherapp.error.LocationProviderThrowable;
-import com.nikolaykul.weatherapp.item.ItemWeather;
 import com.nikolaykul.weatherapp.ui.base.presenter.RxPresenter;
+import com.nikolaykul.weatherapp.util.Navigator;
 import com.nikolaykul.weatherapp.util.RxLocationManager;
 
 import javax.inject.Inject;
@@ -20,12 +21,15 @@ import timber.log.Timber;
 public class MainPresenter extends RxPresenter<MainMvpView> {
     private static final int FORECAST_COUNT = 7;
     private final RxLocationManager mRxLocationManager;
+    private final Navigator mNavigator;
     private final WeatherApi mApi;
     private String mCity;
 
     @Inject public MainPresenter(RxLocationManager rxLocationManager,
+                                 Navigator navigator,
                                  WeatherApi api) {
         mRxLocationManager = rxLocationManager;
+        mNavigator = navigator;
         mApi = api;
     }
 
@@ -41,6 +45,10 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
         loadTodayForecast();
     }
 
+    public void onItemSelected(Forecast item) {
+        mNavigator.navigateToSingleWeather();
+    }
+
     public void loadTodayForecast() {
         final Observable<WeatherModel> apiObservable = mCity != null
                 ? fetchForecastFromCity()
@@ -48,9 +56,6 @@ public class MainPresenter extends RxPresenter<MainMvpView> {
 
         final Subscription sub = apiObservable
                 .map(request -> request.forecasts)
-                .flatMap(Observable::from)
-                .map(ItemWeather::new)
-                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(getMvpView()::showLoading)
