@@ -82,6 +82,7 @@
             android:src="@drawable/ic_location"
             app:elevation="@dimen/elevation_small"
             app:fabSize="normal"
+            app:layout_behavior="com.nikolaykul.weatherapp.view.ScrollingFABBehavior"
             />
 
     </android.support.design.widget.CoordinatorLayout>
