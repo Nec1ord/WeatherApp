@@ -72,21 +72,6 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         return true;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        if (isLoading) {
-            return true;
-        }
-        switch (item.getItemId()) {
-            case R.id.action_geo:
-                mPresenter.onGeoSelected();
-                return true;
-            case R.id.action_search:
-                item.expandActionView();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override protected void injectSelf(ActivityComponent activityComponent) {
         activityComponent.inject(this);
     }
