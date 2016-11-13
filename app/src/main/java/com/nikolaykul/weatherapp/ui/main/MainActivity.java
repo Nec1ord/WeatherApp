@@ -44,7 +44,7 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         mAdapter = new ForecastAdapter(Collections.emptyList(), mPresenter::onItemSelected);
         initRecyclerView(mBinding.recyclerView);
         initToolbar(mBinding.includeToolbar.toolbar);
-        mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);
+        setListeners();
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -145,6 +145,11 @@ public class MainActivity extends BaseMvpNetworkActivity<MainMvpView, MainPresen
         if (actionBar != null) {
             actionBar.setTitle(R.string.title_main);
         }
+    }
+
+    private void setListeners() {
+        mBinding.swipeRefreshLayout.setOnRefreshListener(mPresenter::loadTodayForecast);
+        mBinding.fab.setOnClickListener(v -> mPresenter.onGeoSelected());
     }
 
 }
