@@ -7,9 +7,8 @@
     <string name="action_geo">Find me</string>
 
     <!-- Hint -->
-    <!--TODO: rename search_hint-->
     <string name="hint_swipe">Swipe to refresh</string>
-    <string name="search_hint">Search city…</string>
+    <string name="hint_search">Search city…</string>
 
     <!-- Item weather -->
     <string name="item_today_weather_title">Today is %s</string>

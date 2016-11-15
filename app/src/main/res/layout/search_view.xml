@@ -25,7 +25,7 @@
             android:layout_height="@dimen/view_toolbar_size"
             android:layout_toEndOf="@+id/iv_back"
             android:layout_toRightOf="@+id/iv_back"
-            android:hint="@string/search_hint"
+            android:hint="@string/hint_search"
             android:maxLines="1"
             android:paddingLeft="@dimen/padding_small"
             android:paddingRight="@dimen/padding_small"
