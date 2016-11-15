@@ -10,10 +10,11 @@ import com.nikolaykul.weatherapp.R;
 import com.nikolaykul.weatherapp.error.HasLocalizedMessage;
 import com.nikolaykul.weatherapp.ui.base.presenter.Presenter;
 import com.nikolaykul.weatherapp.ui.base.view.MvpView;
-import com.nikolaykul.weatherapp.ui.base.view.NetworkMvpView;
+import com.nikolaykul.weatherapp.view.contract.CanShowError;
+import com.nikolaykul.weatherapp.view.contract.CanShowLoading;
 
 public abstract class BaseMvpNetworkActivity<TView extends MvpView, TPresenter extends Presenter<TView>>
-        extends BaseMvpActivity<TView, TPresenter> implements NetworkMvpView {
+        extends BaseMvpActivity<TView, TPresenter> implements CanShowLoading, CanShowError {
     private MaterialDialog mStub;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
